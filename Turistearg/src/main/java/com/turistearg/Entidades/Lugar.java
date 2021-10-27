@@ -3,56 +3,45 @@ package com.turistearg.Entidades;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Categoria {
+public class Lugar {
 	@Id
 	@GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 	
-	private String nombre;
-	
 	@OneToOne
-	private Foto foto;
+	private Foto foto;	
+	private String nombre;
+	private String descripcion;
 	
-	@ManyToOne
-	private Lugar lugar;
-
 	public String getId() {
 		return id;
 	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
 	public Foto getFoto() {
 		return foto;
 	}
-
 	public void setFoto(Foto foto) {
 		this.foto = foto;
 	}
-
-	public Lugar getLugar() {
-		return lugar;
+	public String getNombre() {
+		return nombre;
 	}
-
-	public void setLugar(Lugar lugar) {
-		this.lugar = lugar;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	
 	
