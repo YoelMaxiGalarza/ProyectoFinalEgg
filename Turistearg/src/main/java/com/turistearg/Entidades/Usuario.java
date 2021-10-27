@@ -3,6 +3,7 @@ package com.turistearg.Entidades;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,6 +14,9 @@ public class Usuario {
 	@GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
+	
+	@OneToOne
+	private Foto fotoPerfil;
 	
 	private String nombreDeUsuario;
 	private String mail;
@@ -61,6 +65,14 @@ public class Usuario {
 
 	public void setAlta(boolean alta) {
 		this.alta = alta;
+	}
+
+	public Foto getFotoPerfil() {
+		return fotoPerfil;
+	}
+
+	public void setFotoPerfil(Foto fotoPerfil) {
+		this.fotoPerfil = fotoPerfil;
 	}
 	
 	
