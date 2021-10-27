@@ -9,23 +9,20 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Publicacion {
+public class Categoria {
 	@Id
 	@GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 	
+	private String nombre;
+	
 	@OneToOne
 	private Foto foto;
 	
-	@ManyToOne
-	private Usuario usuario;
-	
-	private String descripcion;
-	
-	@OneToOne
-	private Categoria categoria;
-	
+	//@ManyToOne
+	//private Lugar lugar;
+
 	public String getId() {
 		return id;
 	}
@@ -34,23 +31,29 @@ public class Publicacion {
 		this.id = id;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public Foto getFoto() {
+		return foto;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setFoto(Foto foto) {
+		this.foto = foto;
 	}
-	
-	
+
+//	public Lugar getLugar() {
+//		return lugar;
+//	}
+//
+//	public void setLugar(Lugar lugar) {
+//		this.lugar = lugar;
+//	}
 	
 	
 }
