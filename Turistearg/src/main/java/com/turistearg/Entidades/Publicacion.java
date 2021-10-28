@@ -1,5 +1,7 @@
 package com.turistearg.Entidades;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,6 +24,8 @@ public class Publicacion {
 	private Usuario usuario;
 	
 	private String descripcion;
+	
+	private Date fechaPublicacion;
 	
 	@OneToOne
 	private Categoria categoria;
@@ -64,6 +68,13 @@ public class Publicacion {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+	public Date getFechaPublicacion() {
+		return fechaPublicacion;
+	}
+
+	public void setFechaPublicacion(Date fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
 	}
 	
 	
