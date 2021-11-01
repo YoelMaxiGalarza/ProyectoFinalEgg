@@ -1,0 +1,28 @@
+.logo{
+    width: 60px; height: 60px;
+}
+.login{
+    position: relative;
+    left: 87.2%;
+    right: 4.8%;
+    top: 1.23%;
+    bottom: 95.07%;
+    width: 60px; height: 60px;
+    
+}
+.logo2{
+    width: 200px; height: 200px;    
+}
+.contenedor{
+    align-items: center;
+}
+.form-control{
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
