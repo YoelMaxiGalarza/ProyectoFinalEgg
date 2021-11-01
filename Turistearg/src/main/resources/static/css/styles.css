@@ -1,0 +1,50 @@
+
+.logo{
+    width: 60px; height: 60px;
+}
+.btn-group{
+    display: flex;
+    flex-direction: row-reverse;
+    width: 25%;
+}
+.btn-primary{
+    background-color: #ede4ed;
+    color: black;
+}
+#gral{
+    margin: 3%;
+}
+
+footer{
+    background-color: #8991CF;
+    width: 100%;
+    position: fixed;
+    display: inline-block;
+    bottom: 0;
+}
+
+.contenedor{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    
+}
+.cont-img{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 30%;
+    width: 30%;
+    margin: 1%;
+}
+.destino{
+    align-self: center;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+        
+}
+
