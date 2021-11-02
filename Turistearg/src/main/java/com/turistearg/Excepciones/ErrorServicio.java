@@ -1,4 +1,4 @@
-package com.turistearg.excepciones;
+package com.turistearg.Excepciones;
 
 
 public class ErrorServicio extends Exception{
