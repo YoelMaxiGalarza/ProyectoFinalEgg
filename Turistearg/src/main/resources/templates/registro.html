@@ -28,15 +28,30 @@
     </div>
     <br>
     <div class="recupass text-center">
-        <h5>RECUPERO CONTRASEÑA</h5>
+        <h5>CREAR TU CUENTA</h5>
         <br>
       </div>
       <div class="form text-center">
         <form>
             <div class="mb-3">
+                <label for="exampleInputNombre" class="form-label">Nombre </label>
+                <input  type="nombre" class="form-control" id="exampleInputNombre" aria-describedby="nombreHelp">
+              </div>   
+            <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Direccion de Email </label>
               <input  type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>          
+            </div>   
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="exampleInputPassword1">
+              </div> 
+              <div>
+                <label for="exampleInputPassword1" class="form-label">Foto de perfil</label>
+              </div>
+              <form name="subida-imagenes" type="POST" enctype="multipart/formdata" >
+                <input type="file" name="imagen" />
+                </form>
+                <br>      
             <button type="submit" class="btn btn-primary">Continuar</button>
           </form>
       </div>
