@@ -1,6 +1,9 @@
 
 package com.turistearg.Controladores;
 
+import java.util.Enumeration;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,8 +59,27 @@ public class ErrorController {
     
     /* Obtengo el codigo de la solicitud http*/
     
-    private int getErrorCode(HttpServletRequest httpRequest) {
-        return (Integer) httpRequest
-                .getAttribute("javax.servlet.error.status_code");
-    }
+     private int getErrorCode(HttpServletRequest httpRequest) {
+
+ 		@SuppressWarnings("rawtypes")
+ 		Map mapa = httpRequest.getParameterMap();
+ 		for(Object key : mapa.keySet()) {
+ 			String[] valores = (String[]) mapa.get(key);
+ 			for(String valor: valores) {
+ 				System.out.println(key.toString() + ": " + valor);
+ 			}
+ 		}
+ 		Enumeration<String> atributos = httpRequest.getAttributeNames();
+ 		while(atributos.hasMoreElements()) {
+ 			String key = atributos.nextElement();
+ 			System.out.println(key + ":" + httpRequest.getAttribute(key));
+ 		}
+ 		
+ 		return (Integer) httpRequest.getAttribute("javax.servlet.error.status_code");
+ 	}
+ 	
+ 	/* Retorno la direccion /error */
+ 	public String getErrorPath() {
+ 		return "/error";
+ 	}
 }
