@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface LugaresRepositorio extends JpaRepository <Lugares, String> {
+public interface LugarRepositorio extends JpaRepository <Lugares, String> {
     
 }
