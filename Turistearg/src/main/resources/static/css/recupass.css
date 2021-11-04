@@ -2,10 +2,10 @@
     width: 60px; height: 60px;
 }
 .login{
-    position: relative;
-    left: 87.2%;
+    position: absolute;
+    left: 94.6%;
     right: 4.8%;
-    top: 1.23%;
+    top: 10.24%;
     bottom: 95.07%;
     width: 60px; height: 60px;
     
