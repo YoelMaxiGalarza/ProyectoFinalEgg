@@ -26,8 +26,6 @@ import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
 import com.turistearg.Repositorios.UsuarioRepositorio;
 
-import egg.tinderMascotas.Entidades.Zona;
-
 
 
 
@@ -41,33 +39,24 @@ public class UsuarioServicio implements UserDetailsService{
 	private FotoServicio serviciosFoto;
 	
 	@Transactional
-	public void registrar(MultipartFile archivo, String nombreDeUsuario, String mail, String clave1, String clave2) {
-		System.out.println(clave2);
-		System.out.println(clave1);
-		validar(nombre, apellido, mail, clave1, clave2);
+	public void registrar(MultipartFile archivo, String nombreDeUsuario, String mail, String clave1, String clave2) throws ErrorServicio {
+		
+		validar(nombreDeUsuario, mail, clave1, clave2);
 
-		Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
-		if (respuesta.isPresent()) {
-			Usuario user = usuarioRepositorio.findById(id).get();
-			user.setNombreDeUsuario(nombreDeUsuario);
-			user.setMail(mail);
+		Usuario user = new Usuario();
+		user.setNombreDeUsuario(nombreDeUsuario);
+		user.setMail(mail);
 
-			String encriptada = new BCryptPasswordEncoder().encode(clave1);
-			user.setClave(encriptada);
+		String encriptada = new BCryptPasswordEncoder().encode(clave1);
+		user.setClave(encriptada);
 
-			String idFoto = null;
+		user.setAlta(true);
 
-			if (user.getFotoPerfil() != null) {
-				idFoto = user.getFotoPerfil().getId();
-			}
+		Foto foto = serviciosFoto.guardar(archivo);
+		
+		user.setFotoPerfil(foto);
 
-			Foto foto = serviciosFoto.actualizar(idFoto, archivo);
-			user.setFotoPerfil(foto);
-
-			usuarioRepositorio.save(user);
-		} else {
-			throw new ErrorServicio("No se encontro el usuario solicitado");
-		}
+		usuarioRepositorio.save(user);
 	}
 	
 	@Transactional
@@ -136,15 +125,11 @@ public class UsuarioServicio implements UserDetailsService{
 		}
 	}
 	
-	private void validar(String nombre, String apellido, String mail, String clave1, String clave2, Zona zona)
+	private void validar(String nombreDeUsuario, String mail, String clave1, String clave2)
 			throws ErrorServicio {
 
-		if (nombre == null || nombre.isEmpty()) {
+		if (nombreDeUsuario == null || nombreDeUsuario.isEmpty()) {
 			throw new ErrorServicio("El nombre no puede ser nulo.");
-		}
-
-		if (apellido == null || apellido.isEmpty()) {
-			throw new ErrorServicio("El apellido no puede ser nulo.");
 		}
 
 		if (mail == null || mail.isEmpty()) {
@@ -157,13 +142,10 @@ public class UsuarioServicio implements UserDetailsService{
 		if (clave1 == clave2) {
 			throw new ErrorServicio("Las claves deben ser iguales");
 		}
-		if (zona == null) {
-			throw new ErrorServicio("No se encontro la zona solicitada");
-		}
 	}
 
 	public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-		Usuario usuario = usuarioRepositorio.buscarPorMail(mail);
+		Usuario usuario = usuarioRepositorio.buscarUsuarioPorMail(mail);
 		if (usuario != null) {
 			List<GrantedAuthority> permisos = new ArrayList<GrantedAuthority>();
 			
