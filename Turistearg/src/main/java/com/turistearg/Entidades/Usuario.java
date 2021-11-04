@@ -27,6 +27,18 @@ public class Usuario {
 	
 	}
 
+	public Usuario(String id, Foto fotoPerfil, String nombreDeUsuario, String mail, String clave, boolean alta) {
+		super();
+		this.id = id;
+		this.fotoPerfil = fotoPerfil;
+		this.nombreDeUsuario = nombreDeUsuario;
+		this.mail = mail;
+		this.clave = clave;
+		this.alta = alta;
+	}
+
+
+
 	public String getId() {
 		return id;
 	}

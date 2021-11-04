@@ -30,6 +30,22 @@ public class Publicacion {
 	@OneToOne
 	private Categoria categoria;
 	
+	
+	public Publicacion() {
+		super();
+	}
+
+	public Publicacion(String id, Foto foto, Usuario usuario, String descripcion, Date fechaPublicacion,
+			Categoria categoria) {
+		super();
+		this.id = id;
+		this.foto = foto;
+		this.usuario = usuario;
+		this.descripcion = descripcion;
+		this.fechaPublicacion = fechaPublicacion;
+		this.categoria = categoria;
+	}
+
 	public String getId() {
 		return id;
 	}
