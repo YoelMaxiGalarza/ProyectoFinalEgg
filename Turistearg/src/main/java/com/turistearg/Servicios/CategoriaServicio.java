@@ -42,7 +42,7 @@ public class CategoriaServicio {
             throw new ErrorServicio("La id no puede ser nula");
         }
 
-        List<Categoria> categorias = categoriaRepositorio.buscarCategoriasPorLugar();
+        List<Categoria> categorias = categoriaRepositorio.buscarCategoriasPorLugar(id);
 
         return categorias;
 

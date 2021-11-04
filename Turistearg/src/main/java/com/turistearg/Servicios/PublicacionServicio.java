@@ -12,7 +12,7 @@ import com.turistearg.Entidades.Foto;
 import com.turistearg.Entidades.Publicacion;
 import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
-import com.turistearg.Repositorios.CategoriasRepositorio;
+//import com.turistearg.Repositorios.CategoriasRepositorio;
 import com.turistearg.Repositorios.PublicacionRepositorio;
 import com.turistearg.Repositorios.UsuarioRepositorio;
 
@@ -24,8 +24,8 @@ public class PublicacionServicio {
 	@Autowired
 	private PublicacionRepositorio publicacionRepositorio;
 	
-	@Autowired
-	private CategoriasRepositorio categoriaRepositorio;
+//	@Autowired
+//	private CategoriasRepositorio categoriaRepositorio;
 	
 	@Autowired
 	private UsuarioRepositorio usuarioRepositorio;

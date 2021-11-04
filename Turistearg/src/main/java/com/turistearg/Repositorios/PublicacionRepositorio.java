@@ -1,9 +1,7 @@
 
 package com.turistearg.Repositorios;
 
-import com.turistearg.Entidades.Lugar;
 import com.turistearg.Entidades.Publicacion;
-import com.turistearg.Enumeraciones.Categorias;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -2,17 +2,21 @@
 package com.turistearg.Controladores;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.turistearg.Servicios.UsuarioServicio;
 
 
 @Controller
-@RequestMapping("/")
 public class MainController {        
+   
+	@Autowired
+   UsuarioServicio usuarioServicio;
    
     @GetMapping("/")
     public String index(){
@@ -34,10 +38,17 @@ public class MainController {
     public String registro(){
         return "registro.html";
     }       
-//    /* @PostMapping(/regitrar)
-//     public String registrar(String nombreDeUsuario, String mail, String clave);
-//        usuarioServicio.registrar(null, nombreDeUsuario, mail, clave);
-//        return "registro.html";*/
+     @PostMapping("/registrar")
+     public String registrar(String nombreDeUsuario, String mail, String clave1, String clave2) {
+        try {
+        	usuarioServicio.registrar(null, nombreDeUsuario, mail, clave1, clave2);
+        } catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "registro.html";
+		}
+    	 
+        return "index.html";
+	}
         
     @GetMapping("/recupass")
     public String recupass(){
