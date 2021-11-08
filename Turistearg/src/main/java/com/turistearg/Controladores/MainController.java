@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.turistearg.Servicios.UsuarioServicio;
 
@@ -39,9 +40,9 @@ public class MainController {
         return "registro.html";
     }       
      @PostMapping("/registrar")
-     public String registrar(String nombreDeUsuario, String mail, String clave1, String clave2) {
+     public String registrar(MultipartFile foto, String nombreDeUsuario, String mail, String clave1, String clave2) {
         try {
-        	usuarioServicio.registrar(null, nombreDeUsuario, mail, clave1, clave2);
+        	usuarioServicio.registrar(foto, nombreDeUsuario, mail, clave1, clave2);
         } catch (Exception e) {
 			System.out.println(e.getMessage());
 			return "registro.html";
