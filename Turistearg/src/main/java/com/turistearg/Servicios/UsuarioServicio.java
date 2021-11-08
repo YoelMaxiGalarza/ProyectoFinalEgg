@@ -138,7 +138,8 @@ public class UsuarioServicio implements UserDetailsService{
 		if (clave1 == null || clave1.isEmpty() || clave1.length() <= 6) {
 			throw new ErrorServicio("La clave no puede ser nula y tiene que tener mas de 6 digitos.");
 		}
-		if (clave1 == clave2) {
+                
+		if (!clave1.equals(clave2)) {
 			throw new ErrorServicio("Las claves deben ser iguales");
 		}
 	}
