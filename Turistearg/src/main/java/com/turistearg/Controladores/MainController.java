@@ -2,6 +2,7 @@
 package com.turistearg.Controladores;
 
 
+import com.turistearg.Excepciones.ErrorServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -38,18 +39,31 @@ public class MainController {
     @GetMapping("/registro")
     public String registro(){
         return "registro.html";
-    }       
-     @PostMapping("/registrar")
-     public String registrar(MultipartFile foto, String nombreDeUsuario, String mail, String clave1, String clave2) {
+    }
+    
+    
+    @PostMapping("/registrar")
+    public String registrar(ModelMap model, @RequestParam MultipartFile foto,
+            @RequestParam String nombreDeUsuario, @RequestParam String mail,
+            @RequestParam String clave1, @RequestParam String clave2) throws ErrorServicio {
+        
         try {
-        	usuarioServicio.registrar(foto, nombreDeUsuario, mail, clave1, clave2);
-        } catch (Exception e) {
-			System.out.println(e.getMessage());
-			return "registro.html";
-		}
-    	 
-        return "index.html";
-	}
+            
+            usuarioServicio.registrar(foto, nombreDeUsuario, mail, clave1, clave2);
+
+        } catch (ErrorServicio e) {
+            
+            model.put("error", e.getMessage());
+            model.put("nombreDeUsuario", nombreDeUsuario);
+            model.put("mail", mail);
+            model.put("clave1", clave1);
+            model.put("clave2", clave2);
+            
+            return "registro";
+        }
+
+        return "index";
+    }
         
     @GetMapping("/recupass")
     public String recupass(){

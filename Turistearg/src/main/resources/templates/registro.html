@@ -32,7 +32,9 @@
         <br>
       </div>
       <div class="form text-center">
-        <form action="/registrar" type="POST" enctype="multipart/formdata">
+        <form action="/registrar" method="POST" enctype="multipart/form-data">
+            
+             <p th:if="${error != null}" th:text="${error}" style="color:red;"></p>
             <div class="mb-3">
                 <label for="exampleInputNombre" class="form-label">Nombre </label>
                 <input  type="nombre" name="nombreDeUsuario" th:value="${nombreDeUsuario}" class="form-control" id="exampleInputNombre" aria-describedby="nombreHelp" >
