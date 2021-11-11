@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -32,28 +32,30 @@
         <br>
       </div>
       <div class="form text-center">
-        <form action="/registrar" type="POST" enctype="multipart/formdata">
+        <form action="/registrar" method="POST" enctype="multipart/form-data">
+            
+             <p th:if="${error != null}" th:text="${error}" style="color:red;"></p>
             <div class="mb-3">
                 <label for="exampleInputNombre" class="form-label">Nombre </label>
-                <input  type="nombre" class="form-control" id="exampleInputNombre" aria-describedby="nombreHelp">
+                <input  type="nombre" name="nombreDeUsuario" th:value="${nombreDeUsuario}" class="form-control" id="exampleInputNombre" aria-describedby="nombreHelp" >
               </div>   
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Direccion de Email </label>
-              <input  type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input  type="email" name="mail" th:value="${mail}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>   
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <input type="password" name="clave1" th:value="${clave1}" class="form-control" id="exampleInputPassword1">
               </div> 
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Repetir Contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <input type="password" name="clave2" th:value="${clave2}" class="form-control" id="exampleInputPassword1">
               </div> 
               <div>
                 <label for="exampleInputPassword1" class="form-label">Foto de perfil</label>
               </div>
               <div>
-                <input type="file" name="imagen" />
+                <input type="file" name="foto"  />
               </div>
                 <br>      
             <button type="submit" class="btn btn-primary">Continuar</button>
