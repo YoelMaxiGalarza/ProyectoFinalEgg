@@ -1,0 +1,47 @@
+:root {
+	--logo: #cfd4ef;
+	--fondo: #251134;
+}
+* {
+	box-sizing: border-box;
+}
+header .contenedor-nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #490180;
+	width: 100%;
+	padding:20px;
+}
+
+header .logotipo {
+	font-family: 'Bebas Neue', cursive;
+	font-weight: normal;
+	color: var(--logo);
+	font-size: 30px;
+	margin-left: 10px;
+}
+
+header nav a {
+	color: rgb(170, 170, 170);
+	text-decoration: none;
+	margin-right: 20px;
+	font-weight: 600;
+}
+
+header nav a:hover,
+header nav a.activo {
+	color: #FFF;
+}
+/* ---- ----- ----- Media Queries ----- ----- ----- */
+@media screen and (max-width: 800px) {
+	header .logotipo {
+		margin-bottom: 10px;
+		font-size: 30px;
+	}
+
+	header .contenedor-nav {
+		flex-direction: column;
+		text-align: center;
+	}
+}

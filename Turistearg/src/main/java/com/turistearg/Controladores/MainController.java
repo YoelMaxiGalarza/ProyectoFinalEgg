@@ -22,7 +22,7 @@ public class MainController {
    
     @GetMapping("/")
     public String index(){
-        return "index";
+        return "index2";
     }
     
     @GetMapping("/login")
@@ -38,9 +38,8 @@ public class MainController {
     
     @GetMapping("/registro")
     public String registro(){
-        return "registro";
-    }
-    
+        return "registro2";
+    }       
     
     @PostMapping("/registrar")
     public String registrar(ModelMap model, @RequestParam MultipartFile foto,
