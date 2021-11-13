@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
       <meta charset="UTF-8">
@@ -32,20 +32,20 @@
             <br>
           </div>
           <div class="form text-center">
-            <form>
+            <form action="logincheck" method="POST">
+                 <p th:if="${error != null}" th:text="${error}" style="color:red"></p>
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Correo Electronico </label>
-                  <input  type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                  <input  type="email" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputPassword1 text-center" class="form-label">Contraseña</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1">
+                  <input type="password" name="password" class="form-control" id="exampleInputPassword1" >
 
                   <li class="nav-item">
                     <button type ="button" class="btn btn-outline-float-right" href="/login">Olvidaste tu contraseña?</button>
                   </li>
                 </div> 
-                <button type="submit" class="btn btn-primary">Registrarse</button>
                 <button type="submit" class="btn btn-primary">Ingresar</button>
               </form>
           </div>
