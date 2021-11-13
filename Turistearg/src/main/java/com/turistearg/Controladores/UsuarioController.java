@@ -23,11 +23,6 @@ public class UsuarioController {
     
     @Autowired
     UsuarioServicio usuarioServicio;
-    
-     @GetMapping("/usuario")
-        public String usuario(){
-        return "usuario";
-    }
         
        @GetMapping("/perfil")
         public String editarPerfil(HttpSession session, @RequestParam String id, ModelMap model){
