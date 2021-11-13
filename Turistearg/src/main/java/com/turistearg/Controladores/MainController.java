@@ -20,7 +20,7 @@ public class MainController {
    
     @GetMapping("/")
     public String index(){
-        return "index.html";
+        return "index2";
     }
     
     @GetMapping("/login")
@@ -31,12 +31,12 @@ public class MainController {
         if (logout != null) {
             modelo.put("logout", "Ha salido correctamente de la plataforma");
         }
-        return "login.html";
+        return "login";
     }
     
     @GetMapping("/registro")
     public String registro(){
-        return "registro.html";
+        return "registro2";
     }       
      @PostMapping("/registrar")
      public String registrar(String nombreDeUsuario, String mail, String clave1, String clave2) {
@@ -44,15 +44,15 @@ public class MainController {
         	usuarioServicio.registrar(null, nombreDeUsuario, mail, clave1, clave2);
         } catch (Exception e) {
 			System.out.println(e.getMessage());
-			return "registro.html";
+			return "registro";
 		}
     	 
-        return "index.html";
+        return "index";
 	}
         
     @GetMapping("/recupass")
     public String recupass(){
-        return "recupass.html";
+        return "recupass";
     }
     
   }

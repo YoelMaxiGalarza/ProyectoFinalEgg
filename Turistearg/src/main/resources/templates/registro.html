@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -12,16 +12,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #8991CF;">
-    <div class="container">
-        <img class="logo" src="img/logo.jpg">
-    </div>
-    <div class="col clearfix">
-      <ul class="navbar-nav ml-auto" id="links">
-          <a href="/login"><img class="login" src="img/login.png"></a>  
-      </ul>
-    </div>
-  </nav>
+  <div th:replace="fragmentos/navbar :: navbar-index"></div>
   <div class="contenedor">
     <div class="container text-center">
         <img class="logo2" src="img/logo.jpg"> 
