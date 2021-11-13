@@ -31,6 +31,7 @@ public class UsuarioController {
 		}
 		try {
 			Usuario usuario = usuarioServicio.buscarPorId(id);
+			model.addAttribute("usuario", usuario);
 
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
