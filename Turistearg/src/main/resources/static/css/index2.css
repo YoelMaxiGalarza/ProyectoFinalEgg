@@ -1,0 +1,92 @@
+:root {
+	--rojo: #cfd4ef;
+	--fondo: #251134;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-image: linear-gradient(to right, #27908d 0%, #3d99be 31%, #56317a 100%);
+	font-family: 'Roboto', sans-serif;
+}
+
+.contenedor {
+	width: 90%;
+	margin: auto;
+}
+
+/* ---- ----- ----- Pelicula Principal ----- ----- ----- */
+.imagen-principal {
+	font-size: 16px;
+	min-height: 40.62em;
+	color: #fff;
+	background: linear-gradient(rgba(0, 0, 0, .30) 0%, rgba(0, 0, 0, .30) 100%), url(../img/Index.png);
+	background-position: center center;
+	background-size: cover;
+	margin-bottom: 3.12em;
+	display: flex;
+	align-items: end;
+}
+
+.imagen-principal .contenedor {
+	margin: 0 auto;
+	margin-bottom: 6.25em;
+}
+
+.imagen-principal .titulo {
+	font-weight: 600;
+	font-size: 3.12em;
+	margin-bottom: 0.4em;
+}
+
+
+.imagen-principal .boton {
+	background: rgba(0,0,0, 0.5);
+	border: none;
+	border-radius: 0.31em;
+	padding: 0.93em 1.87em;
+	color: #cfd4ef;
+	margin-right: 1.25em;
+	cursor: pointer;
+	transition: .3s ease all;
+	font-size: 1.12em;
+}
+
+.imagen-principal .boton:hover {
+	background: #fff;
+	color: #000;
+}
+
+.imagen-principal .boton i {
+	margin-right: 1.25em;
+}
+
+/* ---- ----- ----- Contenedor Titulo ----- ----- ----- */
+.contenedor-titulo h3{
+	color: #fff;
+	font-size: 30px;
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+img{
+	margin: auto;
+}
+/* ---- ----- ----- Media Queries ----- ----- ----- */
+@media screen and (max-width: 800px) {
+	header .logotipo {
+		margin-bottom: 10px;
+		font-size: 30px;
+	}
+
+	header .contenedor {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.pelicula-principal {
+		font-size: 14px;
+	}
+}

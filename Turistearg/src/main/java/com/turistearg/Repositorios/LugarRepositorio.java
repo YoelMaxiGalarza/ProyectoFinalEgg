@@ -1,11 +1,12 @@
-
 package com.turistearg.Repositorios;
 
-import com.turistearg.Enumeraciones.Categorias;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.turistearg.Entidades.Lugar;
+
+
 @Repository
-public interface CategoriasRepositorio extends JpaRepository <Categorias, String> {
-    
+public interface LugarRepositorio extends JpaRepository <Lugar, String> {
+  
 }
