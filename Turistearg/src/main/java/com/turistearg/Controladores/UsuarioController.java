@@ -36,7 +36,6 @@ public class UsuarioController {
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}
-
 		return "perfil";
 	}
 
