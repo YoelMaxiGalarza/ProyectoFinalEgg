@@ -56,7 +56,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void modificar(MultipartFile archivo, String id, String nombreDeUsuario, String mail, String clave1,
+    public void modificar(String id, String nombreDeUsuario, String mail, String clave1,
             String clave2) throws ErrorServicio {
 
         System.out.println(clave2);
@@ -72,7 +72,7 @@ public class UsuarioServicio implements UserDetailsService {
             String encriptada = new BCryptPasswordEncoder().encode(clave1);
             user.setClave(encriptada);
 
-            String idFoto = null;
+           /* String idFoto = null;
 
             if (user.getFotoPerfil() != null) {
                 idFoto = user.getFotoPerfil().getId();
@@ -80,7 +80,7 @@ public class UsuarioServicio implements UserDetailsService {
 
             Foto foto = serviciosFoto.actualizar(idFoto, archivo);
             user.setFotoPerfil(foto);
-
+            */
             usuarioRepositorio.save(user);
         } else {
             throw new ErrorServicio("No se encontro el usuario solicitado");
