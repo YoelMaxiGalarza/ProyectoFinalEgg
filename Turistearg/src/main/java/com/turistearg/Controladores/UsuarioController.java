@@ -89,4 +89,47 @@ public class UsuarioController {
         return "perfil";
 
     }
-}
+    
+    
+    @GetMapping("/editar-fotoPerfil")
+    public String editarFoto(ModelMap model, HttpSession session,@RequestParam String id){
+    
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
+
+        if (login == null || !login.getId().equals(id)) {
+            return "redirect:/";
+        }
+        try {
+            Usuario usuario = usuarioServicio.buscarPorId(id);
+            model.addAttribute("usuario", usuario);
+
+        } catch (ErrorServicio e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "editar-foto";
+    }
+        
+    
+    @PostMapping("/actualizar-fotoPerfil")
+    public String actualizarFotoPerfil (ModelMap model, HttpSession session,
+            @RequestParam String id,@RequestParam MultipartFile fotoPerfil){
+    
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
+
+        if (login == null || !login.getId().equals(id)) {
+            return "redirect:/";
+        }
+        try {
+            Usuario usuario = usuarioServicio.buscarPorId(id);
+            usuarioServicio.modificarFoto(fotoPerfil,id);
+            session.setAttribute("usuariosession", usuario);    
+            model.addAttribute("usuario", usuario);
+            return "redirect:/perfil";
+
+        } catch (ErrorServicio e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "perfil";
+    }
+    
+ }

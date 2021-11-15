@@ -32,7 +32,7 @@ public class UsuarioServicio implements UserDetailsService {
     private UsuarioRepositorio usuarioRepositorio;
 
     @Autowired
-    private FotoServicio serviciosFoto;
+    private FotoServicio servicioFoto;
 
     @Transactional
     public void registrar(MultipartFile archivo, String nombreDeUsuario, String mail, String clave1, String clave2) throws ErrorServicio {
@@ -48,7 +48,7 @@ public class UsuarioServicio implements UserDetailsService {
 
         user.setAlta(true);
 
-        Foto foto = serviciosFoto.guardar(archivo);
+        Foto foto = servicioFoto.guardar(archivo);
 
         user.setFotoPerfil(foto);
 
@@ -86,7 +86,29 @@ public class UsuarioServicio implements UserDetailsService {
             throw new ErrorServicio("No se encontro el usuario solicitado");
         }
     }
+    
+    
+    public void modificarFoto(MultipartFile foto, String idUsuario) throws ErrorServicio{
+        
+       Usuario usuario = buscarPorId(idUsuario);
+        if (usuario ==null) {
+            throw new ErrorServicio("El usuario solicitado no se ha encontrado");
+            
+        }
+       
+        if (foto == null) {
+            throw new ErrorServicio("Foto no encontrada");
+        }
+       
+       String idFoto = usuario.getFotoPerfil().getId();
+       
+       
+       Foto nuevaFoto = servicioFoto.actualizar(idFoto, foto);
+       usuario.setFotoPerfil(nuevaFoto);
+       usuarioRepositorio.save(usuario);
+    }
 
+    
     @Transactional
     public void deshabilitar(String id) throws ErrorServicio {
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
@@ -161,4 +183,5 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
+    
 }
