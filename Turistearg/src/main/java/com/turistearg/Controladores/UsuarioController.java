@@ -123,7 +123,7 @@ public class UsuarioController {
             Usuario usuario = usuarioServicio.buscarPorId(id);
             usuarioServicio.modificarFoto(fotoPerfil,id);
             session.setAttribute("usuariosession", usuario);    
-            model.addAttribute("usuario", usuario);
+            
             return "redirect:/perfil";
 
         } catch (ErrorServicio e) {
