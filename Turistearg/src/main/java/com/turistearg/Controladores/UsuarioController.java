@@ -75,16 +75,21 @@ public class UsuarioController {
             if (login == null || !login.getId().equals(id)) {
                 return "redirect:/";
             }
+            
         try {
             usuario = usuarioServicio.buscarPorId(id);
             usuarioServicio.modificar(id, nombreDeUsuario, mail, clave1, clave2);
             session.setAttribute("usuariosession", usuario);
             
             return "redirect:/perfil";
+            
         } catch (ErrorServicio ex) {
 
             model.put("error", ex.getMessage());
-            model.put("usuario", usuario);
+            
+            Usuario usuarioActual = (Usuario) session.getAttribute("usuariosession");
+            
+            model.put("usuario", usuarioActual); // probar que devuelva el usuario no modificado al dar un tipo de error
         }
         return "perfil";
 
