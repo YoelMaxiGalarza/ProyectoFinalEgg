@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="/Turistearg/src/main/resources/static/css/footer.css">
 
 <body>
-    <footer th:fragment="footer">
+    <footer th:fragment="footer contenedor">
+        <div class="footer-contenedor">
 
-        <div class="menu-footer">
-            <a href="#">Sobre nosotros</a>
-            <a href="#">Contactanos</a>
+            <div class="menu-footer">
+                <a href="#">Sobre nosotros</a>
+                <br>
+                <a href="#">Contactanos</a>
+            </div>
+
+            <div class="footer-redes-sociales">
+                <a title="Turistearg" href="http://www.instagram.com/turistearg"><img
+                        src="/Turistearg/src/main/resources/static/img/icons8-instagram.svg"
+                        alt="Instagram-turistearg"></a>
+                <a href="http://www.facebook.com/turistearg"><img
+                        src="/Turistearg/src/main/resources/static/img/icons8-facebook-circled.svg"
+                        alt="Facebook-turistearg"></a>
+                <a href="#"><img src="/Turistearg/src/main/resources/static/img/icons8-whatsapp.svg"> </a>
+            </div>
+
+            <div class="copy">
+                <p> ©Copyright todos los derechos reservados</p>
+            </div>
         </div>
 
-        <div class="footer-redes-sociales">
-            <img src="/Turistearg/src/main/resources/static/img/icons8-instagram.svg" alt="Instagram">
-            <img src="/Turistearg/src/main/resources/static/img/icons8-facebook-circled.svg" alt="Facebook">
-            <img src="/Turistearg/src/main/resources/static/img/icons8-whatsapp.svg" alt="Whatsapp">
-        </div>
-
-        <div class="permisos">
-            <p> ©Copyright todos los derechos reservados</p>
-        </div>
     </footer>
 </body>
 

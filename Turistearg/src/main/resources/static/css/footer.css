@@ -3,3 +3,26 @@
     background-color: #251134;
 }
 
+.footer-contenedor{
+    display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding:40px;
+}
+
+footer a {
+	color: rgb(170, 170, 170);
+	text-decoration: none;
+	margin-right: 20px;
+	font-weight: 600;
+}
+
+footer a:hover,
+footer a.activo {
+	color: #FFF;
+}
+
+.copy{
+    color: rgb(170, 170, 170);
+}
