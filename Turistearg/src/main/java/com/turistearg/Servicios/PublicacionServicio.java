@@ -15,6 +15,7 @@ import com.turistearg.Excepciones.ErrorServicio;
 //import com.turistearg.Repositorios.CategoriasRepositorio;
 import com.turistearg.Repositorios.PublicacionRepositorio;
 import com.turistearg.Repositorios.UsuarioRepositorio;
+import java.util.List;
 
 @Service
 public class PublicacionServicio {
@@ -66,4 +67,15 @@ public class PublicacionServicio {
 			throw new ErrorServicio("La categoria no puede ser nula.");
 		}
 	}
+        
+        public List<Publicacion> buscarPublicacionesPorUsuario(String idUsuario)throws ErrorServicio{
+            List<Publicacion> publicaciones = publicacionRepositorio.buscarPublicacionesPorUsuario(idUsuario);
+            
+            if (publicaciones ==null) {
+                throw new ErrorServicio("No se encontraron las publicaciones para el usuario especificado");
+                
+            }
+            return publicaciones;
+        
+        }
 }
