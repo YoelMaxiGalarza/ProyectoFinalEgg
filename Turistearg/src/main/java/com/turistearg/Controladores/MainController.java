@@ -17,7 +17,7 @@ import com.turistearg.Servicios.UsuarioServicio;
 public class MainController {        
    
 	@Autowired
-   UsuarioServicio usuarioServicio;
+   private UsuarioServicio usuarioServicio;
    
     @GetMapping("/")
     public String index(){
@@ -42,9 +42,8 @@ public class MainController {
     
     @PostMapping("/registrar")
     public String registrar(ModelMap model, @RequestParam MultipartFile foto,
-            @RequestParam String nombreDeUsuario, @RequestParam String mail,
-            @RequestParam String clave1, @RequestParam String clave2) throws ErrorServicio {
-        
+            @RequestParam("usuario") String nombreDeUsuario, @RequestParam("correo") String mail,
+            @RequestParam("password") String clave1, @RequestParam("password2") String clave2) throws ErrorServicio {
         try {
             
             usuarioServicio.registrar(foto, nombreDeUsuario, mail, clave1, clave2);
@@ -57,10 +56,10 @@ public class MainController {
             model.put("clave1", clave1);
             model.put("clave2", clave2);
             
-            return "registro";
+            return "registro2";
         }
 
-        return "index";
+        return "index2";
     }
         
     @GetMapping("/recupass")

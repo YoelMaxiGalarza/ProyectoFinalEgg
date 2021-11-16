@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,10 +18,10 @@
 </head>
 
 <body>
-	<div th:replace="navbar :: navbar-registro"></div>
+	<div th:replace="fragmentos/navbar :: navbar-registro"></div>
 	<main>
-		<form action="" class="formulario" id="formulario">
-                    			<!-- Grupo: Correo Electronico -->
+		<form action="/logincheck" method="POST" class="formulario" id="formulario">
+			<!-- Grupo: Correo Electronico -->
 			<div class="formulario__grupo" id="grupo__correo">
 				<label for="correo" class="formulario__label">Correo Electrónico</label>
 				<div class="formulario__grupo-input">
@@ -37,16 +38,16 @@
 						placeholder="Contraseña">
 				</div>
 			</div>
-                        
-                        <div class="olvidopass" id="olvido__password">
-                            <p>Olvide mi contraseña</p>
-                            
-                        </div>
-                        
-                        <button type="submit" class="formulario__btn">Registrarte</button>
-                        <button type="submit" class="formulario__btn-enviar">INGRESAR</button>
+
+			<div class="olvidopass" id="olvido__password">
+				<p>Olvide mi contraseña</p>
+
+			</div>
+
+			<button type="submit" class="formulario__btn-enviar">INGRESAR</button>
 
 		</form>
+		<button href="/registro" class="formulario__btn">Registrarte</button>
 	</main>
 
 	<script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
