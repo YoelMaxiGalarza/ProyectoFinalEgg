@@ -14,8 +14,9 @@
 footer a {
 	color: rgb(170, 170, 170);
 	text-decoration: none;
-	margin-right: 20px;
-	font-weight: 600;
+	margin-right: 3px;
+	font-weight: 600cm;
+    font-size: 30px;
 }
 
 footer a:hover,
@@ -25,4 +26,13 @@ footer a.activo {
 
 .copy{
     color: rgb(170, 170, 170);
+    font-size: 30px;
+}
+
+/* ---- ----- ----- Media Queries ----- ----- ----- */
+@media screen and (max-width: 800px) {
+	body footer-contenedor {
+		flex-direction: column;
+		text-align: center;
+	}
 }
