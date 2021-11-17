@@ -55,6 +55,18 @@ public class PublicacionServicio {
 
 		publicacionRepositorio.save(publicacion);
 	}
+        
+        public Publicacion buscarPublicacionPorId(String id) throws ErrorServicio{
+            
+             Optional<Publicacion> respuesta = publicacionRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Publicacion publicacion = respuesta.get();
+            return publicacion;
+        } else {
+            throw new ErrorServicio("No se encontro la publicacion solicitada.");
+        }
+            
+        }
 	
 	
 	private void validar(String nombreDeUsuario, String categoria)
