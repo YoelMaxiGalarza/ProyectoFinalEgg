@@ -1,9 +1,11 @@
-
 package com.turistearg.Controladores;
 
+import com.turistearg.Entidades.Publicacion;
 import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
+import com.turistearg.Servicios.PublicacionServicio;
 import com.turistearg.Servicios.UsuarioServicio;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,49 +21,120 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-	@Autowired
-	UsuarioServicio usuarioServicio;
+    @Autowired
+    UsuarioServicio usuarioServicio;
 
-	@GetMapping("/perfil")
-	public String editarPerfil(HttpSession session, @RequestParam String id, ModelMap model) {
-		Usuario login = (Usuario) session.getAttribute("usuariosession");
+    @Autowired
+    PublicacionServicio publicacionServicio;
 
-		if (login == null || !login.getId().equals(id)) {
-			return "redirect:/index";
-		}
-		try {
-			Usuario usuario = usuarioServicio.buscarPorId(id);
-			model.addAttribute("usuario", usuario);
+    @GetMapping("/perfil")
+    public String perfil(HttpSession session, @RequestParam String id, ModelMap model) {
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
 
-		} catch (Exception e) {
-			model.addAttribute("error", e.getMessage());
-		}
-		return "perfil";
-	}
+        if (login == null || !login.getId().equals(id)) {
+            return "redirect:/";
+        }
+        try {
+            Usuario usuario = usuarioServicio.buscarPorId(id);
+            model.addAttribute("usuario", usuario);
 
-	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
-	@PostMapping("/actualizar-perfil")
-	public String actualizarperfil(ModelMap model, HttpSession session, @RequestParam String id,
-			@RequestParam String nombreDeUsuario, @RequestParam String apellido, @RequestParam MultipartFile foto,
-			@RequestParam String clave1, @RequestParam String clave2, @RequestParam String mail) {
+            List<Publicacion> publicaciones = publicacionServicio.buscarPublicacionesPorUsuario(id);
+            model.addAttribute("publicaciones", publicaciones);
+        } catch (ErrorServicio e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "perfil";
+    }
 
-		Usuario usuario = null;
-		try {
-			Usuario login = (Usuario) session.getAttribute("usuariosession");
-			if (login == null || !login.getId().equals(id)) {
-				return "redirect:/inicio";
-			}
+    @GetMapping("/editar-perfil")
+    public String editarPerfil(HttpSession session, @RequestParam String id, ModelMap model) {
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
 
-			usuario = usuarioServicio.buscarPorId(id);
-			usuarioServicio.modificar(foto, id, nombreDeUsuario, mail, clave1, clave2);
-			session.setAttribute("usuariosession", usuario);
-			return "redirect:/inicio";
-		} catch (ErrorServicio ex) {
+        if (login == null || !login.getId().equals(id)) {
+            return "redirect:/";
+        }
+        try {
+            Usuario usuario = usuarioServicio.buscarPorId(id);
+            model.addAttribute("usuario", usuario);
 
-			model.put("error", ex.getMessage());
-			model.put("usuario", usuario);
-		}
-		return "perfil";
+        } catch (ErrorServicio e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "editar-perfil";
+    }
 
-	}
-}
+    @PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
+    @PostMapping("/actualizar-perfil")
+    public String actualizarperfil(ModelMap model, HttpSession session,
+            @RequestParam String id, @RequestParam String nombreDeUsuario,
+            @RequestParam String clave1, @RequestParam String clave2,
+            @RequestParam String mail) {
+
+        Usuario usuario = null;
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
+            if (login == null || !login.getId().equals(id)) {
+                return "redirect:/";
+            }
+            
+        try {
+            usuario = usuarioServicio.buscarPorId(id);
+            usuarioServicio.modificar(id, nombreDeUsuario, mail, clave1, clave2);
+            session.setAttribute("usuariosession", usuario);
+            
+            return "redirect:/perfil";
+            
+        } catch (ErrorServicio ex) {
+
+            model.put("error", ex.getMessage());
+            
+            Usuario usuarioActual = (Usuario) session.getAttribute("usuariosession");
+            
+            model.put("usuario", usuarioActual); // probar que devuelva el usuario no modificado al dar un tipo de error
+        }
+        return "perfil";
+
+    }
+    
+    
+    @GetMapping("/editar-fotoPerfil")
+    public String editarFoto(ModelMap model, HttpSession session,@RequestParam String id){
+    
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
+
+        if (login == null || !login.getId().equals(id)) {
+            return "redirect:/";
+        }
+        try {
+            Usuario usuario = usuarioServicio.buscarPorId(id);
+            model.addAttribute("usuario", usuario);
+
+        } catch (ErrorServicio e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "editar-foto";
+    }
+        
+    
+    @PostMapping("/actualizar-fotoPerfil")
+    public String actualizarFotoPerfil (ModelMap model, HttpSession session,
+            @RequestParam String id,@RequestParam MultipartFile fotoPerfil){
+    
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
+
+        if (login == null || !login.getId().equals(id)) {
+            return "redirect:/";
+        }
+        try {
+            Usuario usuario = usuarioServicio.buscarPorId(id);
+            usuarioServicio.modificarFoto(fotoPerfil,id);
+            session.setAttribute("usuariosession", usuario);    
+            
+            return "redirect:/perfil";
+
+        } catch (ErrorServicio e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "perfil";
+    }
+    
+ }
