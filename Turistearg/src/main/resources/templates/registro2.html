@@ -18,7 +18,7 @@
 </head>
 
 <body>
-	<div th:replace="fragmentos/navbar :: navbar-registro"></div>
+	<div th:replace="fragmentos/navbar :: navbar-general"></div>
 	<main>
 		<!-- parrafo si hay un error en el login-->
 		<p th:if="${error != null}" th:text="${error}" style="color:red"></p>

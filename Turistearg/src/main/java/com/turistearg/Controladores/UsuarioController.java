@@ -23,11 +23,11 @@ public class UsuarioController {
 	UsuarioServicio usuarioServicio;
 
 	@GetMapping("/perfil")
-	public String editarPerfil(HttpSession session, @RequestParam String id, ModelMap model) {
+	public String editarPerfil(HttpSession session, String id, ModelMap model) {
 		Usuario login = (Usuario) session.getAttribute("usuariosession");
 
 		if (login == null || !login.getId().equals(id)) {
-			return "redirect:/index";
+			return "redirect:/";
 		}
 		try {
 			Usuario usuario = usuarioServicio.buscarPorId(id);
