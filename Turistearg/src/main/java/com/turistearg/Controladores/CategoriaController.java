@@ -21,17 +21,14 @@ public class CategoriaController {
     @GetMapping("/categorias")
     public String categorias(ModelMap model, @RequestParam("id") String idLugar) throws ErrorServicio {
 
-        List<Categoria> categorias = categoriaServicio.buscarCategoriasPorLugar(idLugar);
+        try {
+            List<Categoria> categorias = categoriaServicio.buscarCategoriasPorLugar(idLugar);
+            model.put("categorias", categorias);
+            model.put("id", idLugar);
 
-        if (categorias.isEmpty() || categorias == null) {
-            
-            // no definitivo ver como resolver el error quizas un template x 
-            
-            throw new ErrorServicio("No se encontraron las categorias solicitadas");
+        } catch (ErrorServicio e) {
+            e.getMessage();
         }
-
-        model.put("categorias", categorias);
-        model.put("id", idLugar);
 
         return "categorias";
 
