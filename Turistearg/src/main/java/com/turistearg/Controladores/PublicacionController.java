@@ -65,17 +65,10 @@ public class PublicacionController {
             return "redirect:/";
         }
         
-        
-        try {
-            
-            Usuario usuario = usuarioServicio.buscarPorId(idUsuario);
                      
-            model.put("usuario", usuario);       
+        model.put("idUsuario", idUsuario);
+        model.put("idCategoria", idCategoria);
             
-        } catch (ErrorServicio e) {
-            model.put("error", e.getMessage());
-        }
-        
         return "crear-publicacion";
         
     }
