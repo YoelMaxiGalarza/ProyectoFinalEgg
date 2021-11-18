@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -18,9 +18,11 @@
 </head>
 
 <body>
-	<div th:replace="navbar :: navbar-registro"></div>
+	<div th:replace="fragmentos/navbar :: navbar-general"></div>
 	<main>
-		<form action="" class="formulario" id="formulario">
+		<!-- parrafo si hay un error en el login-->
+		<p th:if="${error != null}" th:text="${error}" style="color:red"></p>
+		<form method="POST" action="/registrar" enctype="multipart/form-data" class="formulario" id="formulario">
 			<!-- Grupo: Usuario -->
 			<div class="formulario__grupo" id="grupo__usuario">
 				<label for="usuario" class="formulario__label">Usuario</label>
@@ -67,7 +69,7 @@
 			<!-- Grupo: Foto -->
 			<div class="container">
 				<!-- The real file input -->
-				<input type="file" class="container__input" />
+				<input type="file" name="foto" id="foto" class="container__input" />
 
 				<!-- The upload icon -->
 				<div class="container__icon"><i class="fas fa-image"></i></div>
