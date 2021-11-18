@@ -1,7 +1,9 @@
 package com.turistearg.Controladores;
 
+import com.turistearg.Entidades.Publicacion;
 import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
+import com.turistearg.Servicios.PublicacionServicio;
 import com.turistearg.Servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,13 @@ import org.springframework.http.HttpHeaders;
 @Controller
 @RequestMapping("/foto")
 public class FotoController {
+    
+    
     @Autowired
     UsuarioServicio usuarioServicio;
     
-    
+    @Autowired
+    PublicacionServicio publicacionServicio;
     
     @GetMapping("/usuario/{id}")
     public ResponseEntity<byte[]> fotosUsuario(@PathVariable String id) {
@@ -39,6 +44,30 @@ public class FotoController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
             return new ResponseEntity<>(foto, headers, HttpStatus.OK);      
+            
+        } catch (ErrorServicio ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+
+    }
+    
+    @GetMapping("/publicacion/{id}")
+    public ResponseEntity<byte[]> fotoPublicacion(@PathVariable String id) {
+
+        try {
+
+            Publicacion publicacion = publicacionServicio.buscarPublicacionPorId(id);
+
+            if (publicacion.getFoto() == null) {
+                throw new ErrorServicio("La publicacion no tiene una foto asignada");
+            }
+            
+            byte[] foto = publicacion.getFoto().getContenido();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
             
         } catch (ErrorServicio ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
