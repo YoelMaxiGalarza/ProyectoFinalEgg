@@ -32,7 +32,7 @@ public class UsuarioServicio implements UserDetailsService {
     private UsuarioRepositorio usuarioRepositorio;
 
     @Autowired
-    private FotoServicio serviciosFoto;
+    private FotoServicio servicioFoto;
 
     @Transactional
     public void registrar(MultipartFile archivo, String nombreDeUsuario, String mail, String clave1, String clave2) throws ErrorServicio {
@@ -48,7 +48,7 @@ public class UsuarioServicio implements UserDetailsService {
 
         user.setAlta(true);
 
-        Foto foto = serviciosFoto.guardar(archivo);
+        Foto foto = servicioFoto.guardar(archivo);
 
         user.setFotoPerfil(foto);
 
@@ -56,7 +56,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void modificar(MultipartFile archivo, String id, String nombreDeUsuario, String mail, String clave1,
+    public void modificar(String id, String nombreDeUsuario, String mail, String clave1,
             String clave2) throws ErrorServicio {
 
         System.out.println(clave2);
@@ -72,7 +72,7 @@ public class UsuarioServicio implements UserDetailsService {
             String encriptada = new BCryptPasswordEncoder().encode(clave1);
             user.setClave(encriptada);
 
-            String idFoto = null;
+           /* String idFoto = null;
 
             if (user.getFotoPerfil() != null) {
                 idFoto = user.getFotoPerfil().getId();
@@ -80,13 +80,35 @@ public class UsuarioServicio implements UserDetailsService {
 
             Foto foto = serviciosFoto.actualizar(idFoto, archivo);
             user.setFotoPerfil(foto);
-
+            */
             usuarioRepositorio.save(user);
         } else {
             throw new ErrorServicio("No se encontro el usuario solicitado");
         }
     }
+    
+    
+    public void modificarFoto(MultipartFile foto, String idUsuario) throws ErrorServicio{
+        
+       Usuario usuario = buscarPorId(idUsuario);
+        if (usuario ==null) {
+            throw new ErrorServicio("El usuario solicitado no se ha encontrado");
+            
+        }
+       
+        if (foto == null) {
+            throw new ErrorServicio("Foto no encontrada");
+        }
+       
+       String idFoto = usuario.getFotoPerfil().getId();
+       
+       
+       Foto nuevaFoto = servicioFoto.actualizar(idFoto, foto);
+       usuario.setFotoPerfil(nuevaFoto);
+       usuarioRepositorio.save(usuario);
+    }
 
+    
     @Transactional
     public void deshabilitar(String id) throws ErrorServicio {
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
@@ -161,4 +183,5 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
+    
 }
