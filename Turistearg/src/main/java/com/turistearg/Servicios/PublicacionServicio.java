@@ -15,6 +15,8 @@ import com.turistearg.Excepciones.ErrorServicio;
 //import com.turistearg.Repositorios.CategoriasRepositorio;
 import com.turistearg.Repositorios.PublicacionRepositorio;
 import com.turistearg.Repositorios.UsuarioRepositorio;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PublicacionServicio {
@@ -53,6 +55,18 @@ public class PublicacionServicio {
 
 		publicacionRepositorio.save(publicacion);
 	}
+        
+        public Publicacion buscarPublicacionPorId(String id) throws ErrorServicio{
+            
+             Optional<Publicacion> respuesta = publicacionRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Publicacion publicacion = respuesta.get();
+            return publicacion;
+        } else {
+            throw new ErrorServicio("No se encontro la publicacion solicitada.");
+        }
+            
+        }
 	
 	
 	private void validar(String nombreDeUsuario, String categoria)
@@ -66,4 +80,35 @@ public class PublicacionServicio {
 			throw new ErrorServicio("La categoria no puede ser nula.");
 		}
 	}
+        
+        
+        public List<Publicacion> buscarPublicacionesPorCategoria(String idCategoria) throws ErrorServicio{
+            
+            if (idCategoria == null) {
+                throw new ErrorServicio("La id no puede ser nula");
+            }
+            
+            List<Publicacion> publicaciones = new ArrayList();
+            publicaciones = publicacionRepositorio.buscarPublicacionesPorCategoria(idCategoria);
+            
+            
+            if (publicaciones == null) {
+                throw new ErrorServicio("No se encontraron las publicaciones para la categoria especificada");
+            }
+            
+            return publicaciones;
+            
+        }
+        
+        public List<Publicacion> buscarPublicacionesPorUsuario(String idUsuario)throws ErrorServicio{
+            
+            List<Publicacion> publicaciones = new ArrayList();
+            publicaciones = publicacionRepositorio.buscarPublicacionesPorUsuario(idUsuario);
+            
+            if (publicaciones == null) {
+                throw new ErrorServicio("No se encontraron las publicaciones para el usuario especificado"); 
+            }
+            return publicaciones;
+        
+        }
 }

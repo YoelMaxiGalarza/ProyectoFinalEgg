@@ -38,11 +38,16 @@ public class CategoriaServicio {
     
     public List<Categoria> buscarCategoriasPorLugar(String id) throws ErrorServicio {
 
-        if (id == null || id.isEmpty()) {
+        if (id == null) {
             throw new ErrorServicio("La id no puede ser nula");
         }
+        
 
         List<Categoria> categorias = categoriaRepositorio.buscarCategoriasPorLugar(id);
+        
+        if (categorias == null) {
+            throw new ErrorServicio("No se encotraron las categorias solicitadas");
+        }
 
         return categorias;
 
