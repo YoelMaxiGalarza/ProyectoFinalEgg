@@ -60,7 +60,7 @@ public class UsuarioController {
         } catch (ErrorServicio e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "editar-perfil";
+        return "editarPerfil";
     }
 
     @PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
