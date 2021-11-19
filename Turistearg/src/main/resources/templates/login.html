@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Validación de Formulario con Javascript</title>
+	<title>Login</title>
 	<link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,12 +14,16 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/login.css">
 	<link rel="stylesheet" href="css/navbar.css">
-
 </head>
 
 <body>
 	<div th:replace="fragmentos/navbar :: navbar-general"></div>
 	<main>
+		<section>
+			<div>
+				<h2>LOGIN</h2>
+			</div>
+		</section>
 		<form action="/logincheck" method="POST" class="formulario" id="formulario">
 			<!-- Grupo: Correo Electronico -->
 			<div class="formulario__grupo" id="grupo__correo">
@@ -39,15 +43,16 @@
 				</div>
 			</div>
 
-			<div class="olvidopass" id="olvido__password">
-				<p>Olvide mi contraseña</p>
-
+			<div class="recupass_link">
+				<a href="/recuperar-contraseña">Olvide mi contraseña</a>
 			</div>
-
-			<button type="submit" class="formulario__btn-enviar">INGRESAR</button>
-
+			
+			<div class="botones_form">
+			<button type="submit" class="formulario__btn-enviar formulario__btn">INGRESAR</button>
+			<button href="/registro" class="formulario__btn">Registrarte</button>
+			</div>
 		</form>
-		<button href="/registro" class="formulario__btn">Registrarte</button>
+		
 	</main>
 
 	<script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>

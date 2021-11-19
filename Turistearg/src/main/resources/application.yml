@@ -13,6 +13,11 @@ spring:
     username: grupo2egg@gmail.com
     password: bheqdtwkwmlanxzw
 
+  servlet:
+      multipart:
+        max-request-size: 10000KB
+        max-file-size: 10000KB
+
   datasource:
     url: jdbc:mysql://localhost:3306/turistearg?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root

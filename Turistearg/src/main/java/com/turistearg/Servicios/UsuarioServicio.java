@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,9 +22,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.turistearg.Entidades.ConfirmacionToken;
 import com.turistearg.Entidades.Foto;
 import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
+import com.turistearg.Repositorios.RepositorioToken;
 import com.turistearg.Repositorios.UsuarioRepositorio;
 
 @Service
@@ -33,6 +37,47 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Autowired
     private FotoServicio servicioFoto;
+    
+    @Autowired
+    private JavaMailSender javaMailSender;
+    
+    @Autowired
+    RepositorioToken repositorioToken;
+    
+    public void envioToken(String mail) throws ErrorServicio {
+    	if(mail == null || mail.trim().isEmpty()) {
+    		throw new ErrorServicio("El mail no puede estar vacio o ser nulo. COLOCA UN MAIL");
+    	}
+    	Usuario usuario = buscarPorMail(mail);
+    	ConfirmacionToken confirmacionToken = new ConfirmacionToken(usuario);
+    	repositorioToken.save(confirmacionToken);
+    	
+    	SimpleMailMessage mensaje = new SimpleMailMessage();
+    	mensaje.setTo(usuario.getMail());
+    	mensaje.setSubject("Recuperacion de Contraseña Turistearg");
+    	mensaje.setFrom("grupo2egg@gmail.com");
+    	mensaje.setText("Haz click para renovar la contraseña " + "Http://localhost:8080/confirmar_cambio_contraseña?tokenDeConfirmacion=" + confirmacionToken.getToken());
+    	javaMailSender.send(mensaje);
+    }
+    
+    public void cambiarContraseña(String clave1, String clave2,String mail) throws ErrorServicio {
+    	if (mail == null || mail.isEmpty()) {
+            throw new ErrorServicio("El mail no puede ser nulo.");
+        }
+
+        if (clave1 == null || clave1.isEmpty() || clave1.length() <= 6) {
+            throw new ErrorServicio("La clave no puede ser nula y tiene que tener mas de 6 digitos.");
+        }
+
+        if (!clave1.equals(clave2)) {
+            throw new ErrorServicio("Las claves deben ser iguales");
+        }
+        Usuario usuario = buscarPorMail(mail);
+        String encriptada = new BCryptPasswordEncoder().encode(clave1);
+        usuario.setClave(encriptada);
+        usuarioRepositorio.save(usuario);
+        repositorioToken.deleteByUsuarioId(usuario.getId());
+    }
 
     @Transactional
     public void registrar(MultipartFile archivo, String nombreDeUsuario, String mail, String clave1, String clave2) throws ErrorServicio {
@@ -142,6 +187,14 @@ public class UsuarioServicio implements UserDetailsService {
             throw new ErrorServicio("No se encontro al usuario solicitado.");
         }
     }
+    
+    public Usuario buscarPorMail(String mail) throws ErrorServicio {
+    	Usuario user = usuarioRepositorio.buscarUsuarioPorMail(mail);
+    	if ( user == null) {
+			throw new ErrorServicio("El usuario no existe");
+		}
+    	return user; 
+    }
 
     private void validar(String nombreDeUsuario, String mail, String clave1, String clave2)
             throws ErrorServicio {
@@ -183,5 +236,6 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
+    
     
 }
