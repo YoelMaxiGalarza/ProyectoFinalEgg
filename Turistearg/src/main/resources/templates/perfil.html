@@ -12,9 +12,9 @@
 		integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Shalimar&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="css/navbar.css">
-	<link rel="stylesheet" href="css/tweet.css">
-	<link rel="stylesheet" href="css/publicaciones.css">
+	<link rel="stylesheet" href="/css/navbar.css">
+	<link rel="stylesheet" href="/css/tweet.css">
+	<link rel="stylesheet" href="/css/publicaciones.css">
 
 
 </head>
@@ -39,9 +39,10 @@
 					</div>
 				</div>
 			</div>
-			</div>
 		</section>
-
+		<div>
+		<a th:href="@{/publicacion/crear(idCategoria=${idCategoria}, idUsuario=${session.usuariosession.id})}" th:if="${session.usuariosession != null}">Crear Publicacion</a>
+		</div>
 	</main>
 </body>
 

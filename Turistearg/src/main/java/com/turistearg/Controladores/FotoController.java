@@ -1,8 +1,10 @@
 package com.turistearg.Controladores;
 
+import com.turistearg.Entidades.Lugar;
 import com.turistearg.Entidades.Publicacion;
 import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
+import com.turistearg.Servicios.LugarServicio;
 import com.turistearg.Servicios.PublicacionServicio;
 import com.turistearg.Servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,13 @@ public class FotoController {
     
     
     @Autowired
-    UsuarioServicio usuarioServicio;
+    private UsuarioServicio usuarioServicio;
     
     @Autowired
-    PublicacionServicio publicacionServicio;
+    private PublicacionServicio publicacionServicio;
+    
+    @Autowired
+    private LugarServicio lugarServicio;
     
     @GetMapping("/usuario/{id}")
     public ResponseEntity<byte[]> fotosUsuario(@PathVariable String id) {
@@ -73,7 +78,29 @@ public class FotoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
+    }
+    
+    @GetMapping("/lugar/{id}")
+    public ResponseEntity<byte[]> fotoLugar(@PathVariable String id){
+    	
+    	try {
 
+            Lugar lugar = lugarServicio.buscarLugar(id);
+
+            if (lugar.getFoto() == null) {
+                throw new ErrorServicio("El lugar no tiene una foto asignada");
+            }
+            
+            byte[] foto = lugar.getFoto().getContenido();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+            
+        } catch (ErrorServicio ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
     }
 
     

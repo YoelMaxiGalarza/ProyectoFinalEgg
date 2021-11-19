@@ -26,7 +26,8 @@ public class UsuarioController {
 
     @Autowired
     PublicacionServicio publicacionServicio;
-
+    
+    @PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
     @GetMapping("/perfil")
     public String perfil(HttpSession session, @RequestParam String id, ModelMap model) {
         Usuario login = (Usuario) session.getAttribute("usuariosession");
@@ -45,7 +46,7 @@ public class UsuarioController {
         }
         return "perfil";
     }
-
+    @PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
     @GetMapping("/editar-perfil")
     public String editarPerfil(HttpSession session, @RequestParam String id, ModelMap model) {
         Usuario login = (Usuario) session.getAttribute("usuariosession");

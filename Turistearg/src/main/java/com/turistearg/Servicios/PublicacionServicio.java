@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.turistearg.Entidades.Categoria;
 import com.turistearg.Entidades.Foto;
 import com.turistearg.Entidades.Publicacion;
 import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
+import com.turistearg.Repositorios.CategoriaRepositorio;
 //import com.turistearg.Repositorios.CategoriasRepositorio;
 import com.turistearg.Repositorios.PublicacionRepositorio;
 import com.turistearg.Repositorios.UsuarioRepositorio;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,8 +29,11 @@ public class PublicacionServicio {
 	@Autowired
 	private PublicacionRepositorio publicacionRepositorio;
 	
-//	@Autowired
-//	private CategoriasRepositorio categoriaRepositorio;
+	@Autowired
+	private CategoriaRepositorio categoriaRepositorio;
+	
+	@Autowired
+	private CategoriaServicio categoriaServicio;
 	
 	@Autowired
 	private UsuarioRepositorio usuarioRepositorio;
@@ -46,6 +52,14 @@ public class PublicacionServicio {
 			Usuario user = usuarioRepositorio.findById(idUsuario).get();
 			publicacion.setUsuario(user);
 		}
+		Date date = new Date();
+        publicacion.setFechaPublicacion(date);
+
+        
+        Categoria categoria = categoriaServicio.buscarCategoria(idCategoria);
+        
+        publicacion.setCategoria(categoria);
+
 		
 		publicacion.setDescripcion(descripcion);
 
@@ -64,8 +78,7 @@ public class PublicacionServicio {
             return publicacion;
         } else {
             throw new ErrorServicio("No se encontro la publicacion solicitada.");
-        }
-            
+        }  
         }
 	
 	

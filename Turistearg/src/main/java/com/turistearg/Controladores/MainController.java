@@ -1,7 +1,12 @@
 
 package com.turistearg.Controladores;
 
+import com.turistearg.Entidades.Lugar;
 import com.turistearg.Excepciones.ErrorServicio;
+import com.turistearg.Repositorios.LugarRepositorio;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,9 +23,13 @@ public class MainController {
    
 	@Autowired
    private UsuarioServicio usuarioServicio;
+	@Autowired
+	private LugarRepositorio lugarRepositorio;
    
     @GetMapping("/")
-    public String index(){
+    public String index(ModelMap modelo){
+    	List<Lugar> lugares = lugarRepositorio.findAll();
+    	modelo.put("lugares", lugares);
         return "index2";
     }
     

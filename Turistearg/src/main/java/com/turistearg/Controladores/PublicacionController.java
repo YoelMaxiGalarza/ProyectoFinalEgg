@@ -69,7 +69,7 @@ public class PublicacionController {
         model.put("idUsuario", idUsuario);
         model.put("idCategoria", idCategoria);
             
-        return "crear-publicacion";
+        return "publicar";
         
     }
     
@@ -89,19 +89,7 @@ public class PublicacionController {
             return "redirect:/crear";
         }
 
-        return "redirect:/publicaciones";
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        return "redirect:/publicacion/publicaciones?id=" + idCategoria; 
         
     }
     

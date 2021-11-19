@@ -2,10 +2,12 @@
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Twitter markup</title>
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="/css/tweet.css" />
+    <link rel="stylesheet" th:href="@{/css/layout.css}" />
+    <link rel="stylesheet" th:href="@{/css/tweet.css}" />
   </head>
   <body>
+  <a th:href="@{/publicacion/crear(idCategoria=${idCategoria}, idUsuario=${session.usuariosession.id})}" th:if="${session.usuariosession != null}">Crear Publicacion</a>
+
     <div class="layout">
       <div class="layout__left-sidebar">
         <img src="./svg/twitter.svg" class="brand" />
@@ -62,7 +64,9 @@
                 <p th:text="${publicacion.descripcion}" ></p>
                 <div>
                     <img class="tweet__image" th:src="${'/foto/publicacion/' + publicacion.id}" alt="foto publicacion">
-                </div>                    
+                </div>
+                
+                    
             </div>
           </div>
         </div>
