@@ -60,40 +60,7 @@ main {
     opacity: 0;
 }
 
-.container {
-    /* Used to position the input */
-    position: relative;
 
-    /* Center the content */
-    align-items: center;
-    display: flex;
-
-    /* Border */
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    
-    padding: 5px;
-    margin: 10px;
-    width: 25%;
-    background-color: #FFF;
-    box-shadow: 10px solid #000;
-    border-radius: 5px;
-}
-
-.container__input {
-    /* Take the full size */
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-
-    /* Make it transparent */
-    opacity: 0;
-}
-
-.container__icon {
-    margin-left:15px;
-}
 
 .formulario__grupo-terminos,
 .formulario__mensaje,
@@ -152,6 +119,55 @@ main {
     display: block;
 }
 
+.container {
+    /* Used to position the input */
+    position: relative;
+
+    /* Center the content */
+    align-items: center;
+    display: flex;
+
+    /* Border */
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    
+    padding: 5px;
+    margin: 10px;
+    width: 25%;
+    background-color: #FFF;
+    box-shadow: 10px solid #000;
+    border-radius: 5px;
+}
+
+.container__input {
+    /* Take the full size */
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    /* Make it transparent */
+    opacity: 0;
+}
+
+.container__icon {
+    margin-left:15px;
+}
+
+.container__icon svg {
+	fill: none; 
+	height: 24px; 
+	stroke: rgba(0, 0, 0, 0.4); 
+	stroke-linecap: round; 
+	stroke-linejoin: round; 
+	stroke-width: 1; 
+	width: 24px; 
+	margin-right:5px;
+}
+
+
+
+
 /* ----- -----  Estilos para Validacion ----- ----- */
 .formulario__grupo-correcto .formulario__validacion-estado {
     color: #1ed12d;
@@ -187,4 +203,5 @@ main {
     .formulario__btn {
         width: 100%;
     }
+    
 }

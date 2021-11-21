@@ -41,7 +41,7 @@
 			</div>
 		</section>
 		<div>
-		<a th:href="@{/publicacion/crear(idCategoria=${idCategoria}, idUsuario=${session.usuariosession.id})}" th:if="${session.usuariosession != null}">Crear Publicacion</a>
+		<a th:href="@{/publicacion/crear(idUsuario=${session.usuariosession.id})}" th:if="${session.usuariosession != null}">Crear Publicacion</a>
 		</div>
 	</main>
 </body>

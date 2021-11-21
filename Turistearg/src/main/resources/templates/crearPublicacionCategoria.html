@@ -13,22 +13,20 @@
 	<div class="container">
 		<h2>Publicacion</h2>
 		<form action="/publicacion/publicar" method="POST" enctype="multipart/form-data">
+
 			<input type="hidden" name="idUsuario" th:value="${idUsuario}"></input>
+			<input type="hidden" name="idCategoria" th:value="${idCategoria}"></input>
 
 			<div class="group">
 				<textarea name="descripcion" id="" cols="30" rows="10"></textarea>
 			</div>
-			<div>
-				<label>Categoría</label>	
-				<select name="idCategoria" required>
-					<option th:each="categoria : ${categorias}" th:text="${categoria.nombre}" th:value="${categoria.id}">
-				</select>
-			</div>
+			
 			<div class="group">
 				<input type="file" name="foto" required>
 				<span class="highlight"></span>
 				<span class="bar"></span>
 			</div>
+			
 			<button type="submit">Publicar</button>
 		</form>
 	</div>

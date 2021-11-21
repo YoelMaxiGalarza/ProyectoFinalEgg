@@ -17,7 +17,7 @@
 </head>
 
 <body>
-	<div th:if="${}"th:replace="fragmentos/navbar :: navbar-general"></div>
+	<div th:replace="fragmentos/navbar :: navbar-general"></div>
 	<main>
 		<div class="imagen-principal">
 			<div class="contenedor">
@@ -29,6 +29,7 @@
 			<div class="contenedor-titulo">
 				<h3 id="lugares">Destinos turisticos</h3>
 			</div>
+			    <p th:if="${error != null}" th:text="${error}"></p>
 			<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 				<div class="carousel-indicators">
 					<button type="button" th:each="lugar, iterStat : ${lugares}" data-bs-target="#carouselExampleIndicators" 

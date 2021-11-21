@@ -11,14 +11,14 @@
 	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Shalimar&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">  
     <title>Twitter markup</title>
-    <link rel="stylesheet" th:href="@{/css/layout.css}" />
+    <link rel="stylesheet" th:href="@{/css/publicaciones.css}" />
     <link rel="stylesheet" th:href="@{/css/tweet.css}" />
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
   </head>
   <body>
   	<div th:if="${}"th:replace="fragmentos/navbar :: navbar-general"></div>
     <div class="layout">
-    <a th:href="@{/publicacion/crear(idCategoria=${idCategoria}, idUsuario=${session.usuariosession.id})}" th:if="${session.usuariosession != null}">Crear Publicacion</a>
+    <a th:href="@{/publicacion/categoria/crear(idCategoria=${idCategoria}, idUsuario=${session.usuariosession.id})}" th:if="${session.usuariosession != null}">Crear Publicacion</a>
       <div class="layout__main">
         <div class="tweet" th:each="publicacion : ${publicaciones}">
           <img class="tweet__author-logo" th:src="${'/foto/usuario/' + publicacion.usuario.id}" >
