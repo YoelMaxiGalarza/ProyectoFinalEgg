@@ -28,7 +28,7 @@ public class CategoriaServicio {
 
     }
     
-    public List<Categoria> buscarCategorias() throws ErrorServicio {
+	public List<Categoria> buscarCategorias() throws ErrorServicio {
         
         List<Categoria> categorias = categoriaRepositorio.findAll();
         

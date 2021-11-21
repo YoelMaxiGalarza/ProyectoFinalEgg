@@ -76,7 +76,7 @@ public class MainController {
             return "registro2";
         }
 
-        return "index2";
+		return "index";
     }
         
     @GetMapping("/recuperar-contraseña")
