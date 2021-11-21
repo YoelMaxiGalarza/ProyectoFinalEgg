@@ -17,12 +17,12 @@ body {
 	margin: auto;
 }
 
-/* ---- ----- ----- Pelicula Principal ----- ----- ----- */
+/* ---- ----- ----- Imagen Principal ----- ----- ----- */
 .imagen-principal {
 	font-size: 16px;
 	min-height: 40.62em;
 	color: #fff;
-	background: linear-gradient(rgba(0, 0, 0, .30) 0%, rgba(0, 0, 0, .30) 100%), url(../img/Index.png);
+	background: linear-gradient(rgba(70, 70, 100, .30) 0%, rgba(0, 0, 0, .30) 100%), url(../img/Index.png);
 	background-position: center center;
 	background-size: cover;
 	margin-bottom: 3.12em;
@@ -39,28 +39,8 @@ body {
 	font-weight: 600;
 	font-size: 3.12em;
 	margin-bottom: 0.4em;
-}
-
-
-.imagen-principal .boton {
-	background: rgba(0,0,0, 0.5);
-	border: none;
-	border-radius: 0.31em;
-	padding: 0.93em 1.87em;
-	color: #cfd4ef;
-	margin-right: 1.25em;
-	cursor: pointer;
-	transition: .3s ease all;
-	font-size: 1.12em;
-}
-
-.imagen-principal .boton:hover {
-	background: #fff;
-	color: #000;
-}
-
-.imagen-principal .boton i {
-	margin-right: 1.25em;
+	border-bottom: 1px solid #c4c4c4;
+	box-shadow: 200px solid #000;
 }
 
 /* ---- ----- ----- Contenedor Titulo ----- ----- ----- */

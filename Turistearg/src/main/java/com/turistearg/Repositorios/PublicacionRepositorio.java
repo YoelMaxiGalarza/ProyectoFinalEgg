@@ -14,7 +14,8 @@ public interface PublicacionRepositorio extends JpaRepository <Publicacion, Stri
     @Query ("SELECT c From Publicacion c Where c.categoria.id = :id")
     public List <Publicacion> buscarPublicacionesPorCategoria(@Param("id")String id);
                   
-    @Query ("SELECT c From Publicacion c Where c.usuario.id = :id")
+    @Query ("SELECT c From Publicacion c Where c.usuario.id = :id ORDER BY c.fechaPublicacion DESC"
+    		+ "")
     public List <Publicacion> buscarPublicacionesPorUsuario(@Param("id")String id);
     
 }

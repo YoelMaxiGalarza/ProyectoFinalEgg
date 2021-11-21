@@ -1,28 +1,150 @@
-.logo{
-    width: 60px; height: 60px;
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #E5E5E5;
 }
-.login{
-    position: absolute;
-    left: 94.6%;
-    right: 4.8%;
-    top: 10.24%;
-    bottom: 95.07%;
-    width: 60px; height: 60px;
-    
+main {
+    max-width: 800px;
+    margin: auto;
+    padding: 40px;
 }
-.logo2{
-    width: 200px; height: 200px;    
+section{
+	margin-bottom: 3rem;
 }
-.contenedor{
-    align-items: center;
+.encabezado-recupass{
+	border-bottom: 2px solid #c4c4c4;
 }
-.form-control{
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.formulario {
+    display: flex;
+    flex-direction: column;
 }
 
+.formulario__grupo-input {
+    position: relative;
+}
+.formulario__label {
+    display: block;
+    font-weight: 700;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.formulario__input {
+    width: 100%;
+    background: #fff;
+    border: 3px solid transparent;
+    border-radius: 3px;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 40px 0 10px;
+    transition: 0.3s ease all;
+}
+
+
+.formulario__input:focus {
+    border: 3px solid #0075FF;
+    outline: none;
+    box-shadow: 3px 0 30px rgba(163, 163, 163, 0.4);
+}
+.container {
+    /* Used to position the input */
+    position: relative;
+
+    /* Center the content */
+    align-items: center;
+    display: flex;
+
+    /* Border */
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    
+    padding: 5px;
+    margin: 10px;
+    width: 25%;
+    background-color: #FFF;
+    box-shadow: 10px solid #000;
+    border-radius: 5px;
+}
+
+.container__input {
+    /* Take the full size */
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    /* Make it transparent */
+    opacity: 0;
+}
+.formulario__grupo-btn-enviar .formulario__btn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.formulario__btn  {
+    height: 45px;
+    line-height: 45px;
+    width: 30%;
+    background: #251134;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.1s ease all;
+    margin-left: auto;
+    margin-right: auto;
+}
+.formulario__btn-enviar  {
+    height: 45px;
+    line-height: 45px;
+    width: 30%;
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.1s ease all;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.formulario__btn:hover {
+    box-shadow: 3px 0 30px rgba(163, 163, 163, 1);
+}
+
+.olvidopass {
+  color:#000000;
+  text-decoration:underline;
+  cursor:pointer;
+  margin-top: 2%;
+}
+.botones_form{
+	display:flex;
+	flex-direction: column;
+}
+.botones_form button{
+	margin: auto;
+	margin-bottom: 15px;
+	margin-top: 3rem;
+}
+/* ----- -----  Mediaqueries ----- ----- */
+@media screen and(max-width: 800px) {
+    .formulario {
+        grid-template-columns: 1fr;
+    }
+
+    .formulario__grupo-terminos,
+    .formulario__mensaje,
+    .formulario__grupo-btn-enviar {
+        grid-column: 1;
+    }
+
+    .formulario__btn .formulario__btn-enviar{
+        width: 100%;
+    }
+}

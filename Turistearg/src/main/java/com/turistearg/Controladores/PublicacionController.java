@@ -1,4 +1,3 @@
-
 package com.turistearg.Controladores;
 
 import com.turistearg.Entidades.Categoria;
@@ -24,87 +23,94 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/publicacion")
 public class PublicacionController {
-    
-    
-    @Autowired
-    PublicacionServicio publicacionServicio;
-    
-    @Autowired
-    UsuarioServicio usuarioServicio;
-    
-    @Autowired
-    CategoriaServicio categoriaServicio;
-    
-    @GetMapping("/publicaciones")
-    public String publicaciones(ModelMap model, @RequestParam("id") String idCategoria) throws ErrorServicio {
 
-        try {
-            List<Publicacion> publicaciones = publicacionServicio.buscarPublicacionesPorCategoria(idCategoria);
+	@Autowired
+	PublicacionServicio publicacionServicio;
 
-            model.put("publicaciones", publicaciones);
+	@Autowired
+	UsuarioServicio usuarioServicio;
 
-            model.put("idCategoria", idCategoria);
+	@Autowired
+	CategoriaServicio categoriaServicio;
 
-        } catch (ErrorServicio e) {
-            throw new ErrorServicio(e.getMessage());
+	@GetMapping("/publicaciones")
+	public String publicaciones(ModelMap model, @RequestParam("id") String idCategoria) throws ErrorServicio {
+		try {
+			List<Publicacion> publicaciones = publicacionServicio.buscarPublicacionesPorCategoria(idCategoria);
 
-        }
+			model.put("publicaciones", publicaciones);
+			model.put("idCategoria", idCategoria);
 
-        return "publicaciones";
+		} catch (ErrorServicio e) {
+			model.put("error", e.getMessage());
+			return "error";
+		}
 
-    }
-    
-    @PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
-    @GetMapping("/crear")
-    public String displayCrearPublicar(ModelMap model, HttpSession session, @RequestParam String idCategoria,
-            @RequestParam String idUsuario){
-        
-          Usuario login = (Usuario) session.getAttribute("usuariosession");
+		return "publicaciones";
+	}
 
-        if (login == null || !login.getId().equals(idUsuario)) {
-            return "redirect:/";
-        }
-        
-                     
-        model.put("idUsuario", idUsuario);
-        model.put("idCategoria", idCategoria);
-            
-        return "crear-publicacion";
-        
-    }
-    
-    
-    @PostMapping("/publicar")
-    public String publicar(ModelMap model, @RequestParam String idUsuario, @RequestParam String idCategoria,
-            @RequestParam(required = false) String descripcion, @RequestParam MultipartFile foto){
-        
-        try {
-            
-          publicacionServicio.crear(foto, idUsuario, descripcion, idCategoria);
-          
-          
-        } catch (ErrorServicio e) {
-            model.put("error", e.getMessage());
-          
-            return "redirect:/crear";
-        }
+	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
+	@GetMapping("/crear") // CORREGIR URL PARA PASAR idUsuario DESDE PERFIL
+	public String displayCrearPublicar(ModelMap model, HttpSession session, @RequestParam String idUsuario) {
+		try {
+			// Obtener usuario
+			Usuario login = (Usuario) session.getAttribute("usuariosession");
+			if (login == null || !login.getId().equals(idUsuario)) {
+				return "redirect:/";
+			}
+			model.put("idUsuario", idUsuario);
 
-        return "redirect:/publicaciones";
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    }
-    
-    
-    
+			// Obtener categorias
+			List<Categoria> categorias = categoriaServicio.buscarCategorias();
+			model.put("categorias", categorias);
+		} catch (Exception e) {
+			model.put("error", e.getMessage());
+			return "error";
+		}
+
+		return "publicar";
+	}
+
+	@PostMapping("/publicar")
+	public String publicar(ModelMap model, @RequestParam String idUsuario, @RequestParam String idCategoria,
+			@RequestParam(required = false) String descripcion, @RequestParam MultipartFile foto) {
+
+		try {
+			publicacionServicio.crear(foto, idUsuario, descripcion, idCategoria);
+		} catch (ErrorServicio e) {
+			model.put("error", e.getMessage());
+			return "redirect:/publicacion/crear";
+		}
+		catch(Exception e) {
+			model.put("error", e.getMessage());
+			return "error";	
+		}
+
+		return "redirect:/publicacion/publicaciones?id=" + idCategoria;
+	}
+	
+	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
+	@GetMapping("/categoria/crear")
+	public String displayCrearPublicacionCategoria(ModelMap model, HttpSession session, @RequestParam String idUsuario, 
+			 @RequestParam String idCategoria) {
+		try {
+			// Obtener usuario
+			Usuario login = (Usuario) session.getAttribute("usuariosession");
+			if (login == null || !login.getId().equals(idUsuario)) {
+				return "redirect:/";
+			}
+			model.put("idUsuario", idUsuario);
+
+			// Obtener categoria
+			Categoria categoria = categoriaServicio.buscarCategoria(idCategoria);
+			model.put("idCategoria", categoria.getId());
+			
+		} catch (Exception e) {
+			model.put("error", e.getMessage());
+			return "error";
+		}
+
+		return "crearPublicacionCategoria";
+	}
+
 }
