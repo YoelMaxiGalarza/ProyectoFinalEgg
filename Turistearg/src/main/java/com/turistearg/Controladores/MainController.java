@@ -38,7 +38,7 @@ public class MainController {
     public String index(ModelMap modelo){
     	List<Lugar> lugares = lugarRepositorio.findAll();
     	modelo.put("lugares", lugares);
-        return "index2";
+        return "index";
     }
     
     @GetMapping("/login")

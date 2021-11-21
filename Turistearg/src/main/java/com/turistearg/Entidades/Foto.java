@@ -5,6 +5,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import java.util.Base64;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -53,5 +54,7 @@ public class Foto {
 		this.contenido = contenido;
 	}
 	
-	
+	public String getContenidoBase64() {
+		return new String(Base64.getEncoder().encodeToString(this.contenido));
+	}
 }
