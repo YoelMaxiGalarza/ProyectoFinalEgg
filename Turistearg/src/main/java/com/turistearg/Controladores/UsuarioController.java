@@ -60,6 +60,7 @@ public class UsuarioController extends BaseController {
 	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
 	@GetMapping("/editar-perfil")
 	public String editarPerfil(HttpSession session, @RequestParam String id, ModelMap model) {
+		
 		Usuario login = (Usuario) session.getAttribute("usuariosession");
 
 		if (login == null || !login.getId().equals(id)) {

@@ -50,7 +50,7 @@ public class PublicacionController {
 	}
 
 	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
-	@GetMapping("/crear")
+	@GetMapping("/crear") // CORREGIR URL PARA PASAR idUsuario DESDE PERFIL
 	public String displayCrearPublicar(ModelMap model, HttpSession session, @RequestParam String idUsuario) {
 		try {
 			// Obtener usuario
@@ -87,6 +87,30 @@ public class PublicacionController {
 		}
 
 		return "redirect:/publicacion/publicaciones?id=" + idCategoria;
+	}
+	
+	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
+	@GetMapping("/categoria/crear")
+	public String displayCrearPublicacionCategoria(ModelMap model, HttpSession session, @RequestParam String idUsuario, 
+			 @RequestParam String idCategoria) {
+		try {
+			// Obtener usuario
+			Usuario login = (Usuario) session.getAttribute("usuariosession");
+			if (login == null || !login.getId().equals(idUsuario)) {
+				return "redirect:/";
+			}
+			model.put("idUsuario", idUsuario);
+
+			// Obtener categoria
+			Categoria categoria = categoriaServicio.buscarCategoria(idCategoria);
+			model.put("idCategoria", categoria.getId());
+			
+		} catch (Exception e) {
+			model.put("error", e.getMessage());
+			return "error";
+		}
+
+		return "crearPublicacionCategoria";
 	}
 
 }

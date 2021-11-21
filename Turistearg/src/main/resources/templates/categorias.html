@@ -28,7 +28,7 @@
             <div class="grilla-categorias">
                 <div th:each="categoria: ${categorias}">
                     <p th:text="${categoria.nombre}"></p>
-                    <a th:href="@{/publicacion/publicaciones(id=__${categoria.id}__)}"><img src="/img/ROSARIO.png" alt=""></a>
+                    <a th:href="@{/publicacion/publicaciones(id=__${categoria.id}__)}"><img th:src="@{'data:image/jpeg;base64,'+${categoria.foto.getContenidoBase64()}}" alt=""></a>
                 </div>
             </div>
         </section>
