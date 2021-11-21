@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,216 +26,223 @@ import com.turistearg.Entidades.ConfirmacionToken;
 import com.turistearg.Entidades.Foto;
 import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
-import com.turistearg.Repositorios.RepositorioToken;
+import com.turistearg.Repositorios.TokenRepositorio;
 import com.turistearg.Repositorios.UsuarioRepositorio;
 
 @Service
 public class UsuarioServicio implements UserDetailsService {
 
-    @Autowired
-    private UsuarioRepositorio usuarioRepositorio;
+	@Autowired
+	private UsuarioRepositorio usuarioRepositorio;
 
-    @Autowired
-    private FotoServicio servicioFoto;
-    
-    @Autowired
-    private JavaMailSender javaMailSender;
-    
-    @Autowired
-    RepositorioToken repositorioToken;
-    
-    public void envioToken(String mail) throws ErrorServicio {
-    	if(mail == null || mail.trim().isEmpty()) {
-    		throw new ErrorServicio("El mail no puede estar vacio o ser nulo. COLOCA UN MAIL");
-    	}
-    	Usuario usuario = buscarPorMail(mail);
-    	ConfirmacionToken confirmacionToken = new ConfirmacionToken(usuario);
-    	repositorioToken.save(confirmacionToken);
-    	
-    	SimpleMailMessage mensaje = new SimpleMailMessage();
-    	mensaje.setTo(usuario.getMail());
-    	mensaje.setSubject("Recuperacion de Contraseña Turistearg");
-    	mensaje.setFrom("grupo2egg@gmail.com");
-    	mensaje.setText("Haz click para renovar la contraseña " + "Http://localhost:8080/confirmar_cambio_contraseña?tokenDeConfirmacion=" + confirmacionToken.getToken());
-    	javaMailSender.send(mensaje);
-    }
-    
-    public void cambiarContraseña(String clave1, String clave2,String mail) throws ErrorServicio {
-    	if (mail == null || mail.isEmpty()) {
-            throw new ErrorServicio("El mail no puede ser nulo.");
-        }
+	@Autowired
+	private FotoServicio servicioFoto;
 
-        if (clave1 == null || clave1.isEmpty() || clave1.length() <= 6) {
-            throw new ErrorServicio("La clave no puede ser nula y tiene que tener mas de 6 digitos.");
-        }
+	@Autowired
+	private JavaMailSender javaMailSender;
 
-        if (!clave1.equals(clave2)) {
-            throw new ErrorServicio("Las claves deben ser iguales");
-        }
-        Usuario usuario = buscarPorMail(mail);
-        String encriptada = new BCryptPasswordEncoder().encode(clave1);
-        usuario.setClave(encriptada);
-        usuarioRepositorio.save(usuario);
-        repositorioToken.deleteByUsuarioId(usuario.getId());
-    }
+	@Autowired
+	TokenRepositorio tokenRepositorio;
 
-    @Transactional
-    public void registrar(MultipartFile archivo, String nombreDeUsuario, String mail, String clave1, String clave2) throws ErrorServicio {
+	public void envioToken(String mail, String urlBase, String token) throws ErrorServicio {
+		if (mail == null || mail.trim().isEmpty()) {
+			throw new ErrorServicio("El mail no puede estar vacio o ser nulo. COLOCA UN MAIL");
+		}
+		try {
+			SimpleMailMessage mensaje = new SimpleMailMessage();
+			mensaje.setTo(mail);
+			mensaje.setSubject("Recuperacion de Contraseña Turistearg");
+			mensaje.setFrom("grupo2egg@gmail.com");
+			mensaje.setText("Haz click para renovar la contraseña " + urlBase
+					+ "/usuario/confirmar_cambio_contraseña?tokenDeConfirmacion=" + token);
+			javaMailSender.send(mensaje);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw new ErrorServicio(e.getMessage(), e);
+		}
+	}
 
-        validar(nombreDeUsuario, mail, clave1, clave2);
+	@Transactional
+	public void cambiarContraseña(String clave1, String clave2, String mail) throws ErrorServicio {
+		if (mail == null || mail.isEmpty()) {
+			throw new ErrorServicio("El mail no puede ser nulo.");
+		}
 
-        Usuario user = new Usuario();
-        user.setNombreDeUsuario(nombreDeUsuario);
-        user.setMail(mail);
+		if (clave1 == null || clave1.isEmpty() || clave1.length() <= 6) {
+			throw new ErrorServicio("La clave no puede ser nula y tiene que tener mas de 6 digitos.");
+		}
 
-        String encriptada = new BCryptPasswordEncoder().encode(clave1);
-        user.setClave(encriptada);
+		if (!clave1.equals(clave2)) {
+			throw new ErrorServicio("Las claves deben ser iguales");
+		}
+		Usuario usuario = buscarPorMail(mail);
+		String encriptada = new BCryptPasswordEncoder().encode(clave1);
+		usuario.setClave(encriptada);
+		usuarioRepositorio.save(usuario);
+	}
 
-        user.setAlta(true);
+	@Transactional
+	public void registrar(MultipartFile archivo, String nombreDeUsuario, String mail, String clave1, String clave2)
+			throws ErrorServicio {
 
-        Foto foto = servicioFoto.guardar(archivo);
+		validar(nombreDeUsuario, mail, clave1, clave2);
+		try {
+			Usuario user = new Usuario();
+			user.setNombreDeUsuario(nombreDeUsuario);
+			user.setMail(mail);
 
-        user.setFotoPerfil(foto);
+			String encriptada = new BCryptPasswordEncoder().encode(clave1);
+			user.setClave(encriptada);
 
-        usuarioRepositorio.save(user);
-    }
+			user.setAlta(true);
 
-    @Transactional
-    public void modificar(String id, String nombreDeUsuario, String mail, String clave1,
-            String clave2) throws ErrorServicio {
+			Foto foto = servicioFoto.guardar(archivo);
 
-        System.out.println(clave2);
-        System.out.println(clave1);
-        validar(nombreDeUsuario, mail, clave1, clave2);
+			user.setFotoPerfil(foto);
 
-        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
-        if (respuesta.isPresent()) {
-            Usuario user = usuarioRepositorio.findById(id).get();
-            user.setNombreDeUsuario(nombreDeUsuario);
-            user.setMail(mail);
+			usuarioRepositorio.save(user);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw new ErrorServicio(e.getMessage(), e);
+		}
+	}
 
-            String encriptada = new BCryptPasswordEncoder().encode(clave1);
-            user.setClave(encriptada);
+	@Transactional
+	public void modificar(String id, String nombreDeUsuario, String mail, String clave1, String clave2)
+			throws ErrorServicio {
 
-           /* String idFoto = null;
+		System.out.println(clave2);
+		System.out.println(clave1);
+		validar(nombreDeUsuario, mail, clave1, clave2);
 
-            if (user.getFotoPerfil() != null) {
-                idFoto = user.getFotoPerfil().getId();
-            }
+		Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+		if (respuesta.isPresent()) {
+			Usuario user = usuarioRepositorio.findById(id).get();
+			user.setNombreDeUsuario(nombreDeUsuario);
+			user.setMail(mail);
 
-            Foto foto = serviciosFoto.actualizar(idFoto, archivo);
-            user.setFotoPerfil(foto);
-            */
-            usuarioRepositorio.save(user);
-        } else {
-            throw new ErrorServicio("No se encontro el usuario solicitado");
-        }
-    }
-    
-    
-    public void modificarFoto(MultipartFile foto, String idUsuario) throws ErrorServicio{
-        
-       Usuario usuario = buscarPorId(idUsuario);
-        if (usuario ==null) {
-            throw new ErrorServicio("El usuario solicitado no se ha encontrado");
-            
-        }
-       
-        if (foto == null) {
-            throw new ErrorServicio("Foto no encontrada");
-        }
-       
-       String idFoto = usuario.getFotoPerfil().getId();
-       
-       
-       Foto nuevaFoto = servicioFoto.actualizar(idFoto, foto);
-       usuario.setFotoPerfil(nuevaFoto);
-       usuarioRepositorio.save(usuario);
-    }
+			String encriptada = new BCryptPasswordEncoder().encode(clave1);
+			user.setClave(encriptada);
 
-    
-    @Transactional
-    public void deshabilitar(String id) throws ErrorServicio {
-        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
-        if (respuesta.isPresent()) {
-            Usuario user = respuesta.get();
-            user.setAlta(false);
-            usuarioRepositorio.save(user);
-        } else {
-            throw new ErrorServicio("No se encontro el usuario solicitado");
-        }
-    }
+			/*
+			 * String idFoto = null;
+			 * 
+			 * if (user.getFotoPerfil() != null) { idFoto = user.getFotoPerfil().getId(); }
+			 * 
+			 * Foto foto = serviciosFoto.actualizar(idFoto, archivo);
+			 * user.setFotoPerfil(foto);
+			 */
+			usuarioRepositorio.save(user);
+		} else {
+			throw new ErrorServicio("No se encontro el usuario solicitado");
+		}
+	}
 
-    @Transactional
-    public void habilitar(String id) throws ErrorServicio {
-        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
-        if (respuesta.isPresent()) {
-            Usuario user = respuesta.get();
-            user.setAlta(true);
-            usuarioRepositorio.save(user);
-        } else {
-            throw new ErrorServicio("No se encontro el usuario solicitado");
-        }
-    }
+	@Transactional
+	public void modificarFoto(MultipartFile foto, String idUsuario) throws ErrorServicio {
 
-    public Usuario buscarPorId(String id) throws ErrorServicio {
-        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
-        if (respuesta.isPresent()) {
-            Usuario user = respuesta.get();
-            return user;
-        } else {
-            throw new ErrorServicio("No se encontro al usuario solicitado.");
-        }
-    }
-    
-    public Usuario buscarPorMail(String mail) throws ErrorServicio {
-    	Usuario user = usuarioRepositorio.buscarUsuarioPorMail(mail);
-    	if ( user == null) {
+		Usuario usuario = buscarPorId(idUsuario);
+		if (usuario == null) {
+			throw new ErrorServicio("El usuario solicitado no se ha encontrado");
+
+		}
+
+		if (foto == null) {
+			throw new ErrorServicio("Foto no encontrada");
+		}
+
+		String idFoto = usuario.getFotoPerfil().getId();
+
+		Foto nuevaFoto = servicioFoto.actualizar(idFoto, foto);
+		usuario.setFotoPerfil(nuevaFoto);
+		usuarioRepositorio.save(usuario);
+	}
+
+	@Transactional
+	public void deshabilitar(String id) throws ErrorServicio {
+		Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+		if (respuesta.isPresent()) {
+			Usuario user = respuesta.get();
+			user.setAlta(false);
+			usuarioRepositorio.save(user);
+		} else {
+			throw new ErrorServicio("No se encontro el usuario solicitado");
+		}
+	}
+
+	@Transactional
+	public void habilitar(String id) throws ErrorServicio {
+		Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+		if (respuesta.isPresent()) {
+			Usuario user = respuesta.get();
+			user.setAlta(true);
+			usuarioRepositorio.save(user);
+		} else {
+			throw new ErrorServicio("No se encontro el usuario solicitado");
+		}
+	}
+
+	public Usuario buscarPorId(String id) throws ErrorServicio {
+		Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+		if (respuesta.isPresent()) {
+			Usuario user = respuesta.get();
+			return user;
+		} else {
+			throw new ErrorServicio("No se encontro al usuario solicitado.");
+		}
+	}
+
+	public Usuario buscarPorMail(String mail) throws ErrorServicio {
+		Usuario user = usuarioRepositorio.buscarUsuarioPorMail(mail);
+		if (user == null) {
 			throw new ErrorServicio("El usuario no existe");
 		}
-    	return user; 
-    }
+		return user;
+	}
 
-    private void validar(String nombreDeUsuario, String mail, String clave1, String clave2)
-            throws ErrorServicio {
+	public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+		Usuario usuario = usuarioRepositorio.buscarUsuarioPorMail(mail);
+		if (usuario != null) {
+			List<GrantedAuthority> permisos = new ArrayList<GrantedAuthority>();
 
-        if (nombreDeUsuario == null || nombreDeUsuario.isEmpty()) {
-            throw new ErrorServicio("El nombre no puede ser nulo.");
-        }
+			GrantedAuthority p1 = new SimpleGrantedAuthority("ROLE_USUARIO_REGISTRADO");
+			permisos.add(p1);
 
-        if (mail == null || mail.isEmpty()) {
-            throw new ErrorServicio("El mail no puede ser nulo.");
-        }
+			ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+			HttpSession session = attr.getRequest().getSession(true);
+			session.setAttribute("usuariosession", usuario);
 
-        if (clave1 == null || clave1.isEmpty() || clave1.length() <= 6) {
-            throw new ErrorServicio("La clave no puede ser nula y tiene que tener mas de 6 digitos.");
-        }
+			User user = new User(usuario.getMail(), usuario.getClave(), permisos);
 
-        if (!clave1.equals(clave2)) {
-            throw new ErrorServicio("Las claves deben ser iguales");
-        }
-    }
+			return user;
+		} else {
+			return null;
+		}
 
-    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepositorio.buscarUsuarioPorMail(mail);
-        if (usuario != null) {
-            List<GrantedAuthority> permisos = new ArrayList<GrantedAuthority>();
+	}
 
-            GrantedAuthority p1 = new SimpleGrantedAuthority("ROLE_USUARIO_REGISTRADO");
-            permisos.add(p1);
+	private void validar(String nombreDeUsuario, String mail, String clave1, String clave2) throws ErrorServicio {
 
-            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            HttpSession session = attr.getRequest().getSession(true);
-            session.setAttribute("usuariosession", usuario);
+		if (nombreDeUsuario == null || nombreDeUsuario.isEmpty()) {
+			throw new ErrorServicio("El nombre no puede ser nulo.");
+		}
 
-            User user = new User(usuario.getMail(), usuario.getClave(), permisos);
+		if (mail == null || mail.isEmpty()) {
+			throw new ErrorServicio("El mail no puede ser nulo.");
+		}
 
-            return user;
-        } else {
-            return null;
-        }
+		if (clave1 == null || clave1.isEmpty() || clave1.length() <= 6) {
+			throw new ErrorServicio("La clave no puede ser nula y tiene que tener mas de 6 digitos.");
+		}
 
-    }
-    
-    
+		if (!clave1.equals(clave2)) {
+			throw new ErrorServicio("Las claves deben ser iguales");
+		}
+
+		Usuario user = usuarioRepositorio.buscarUsuarioPorMail(mail);
+
+		if (user != null) {
+			throw new ErrorServicio("Ya existe un usuario con el email ingresado.");
+		}
+	}
 }

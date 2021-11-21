@@ -10,27 +10,26 @@ import java.util.Optional;
 
 @Service
 public class LugarServicio {
-    
-    @Autowired
-    private LugarRepositorio lugarRepositorio;
 
-    public Lugar buscarLugar(String id) throws ErrorServicio {
+	@Autowired
+	private LugarRepositorio lugarRepositorio;
 
-        Optional<Lugar> respuesta = lugarRepositorio.findById(id);
+	public Lugar buscarLugar(String id) throws ErrorServicio {
 
-        if (respuesta.isPresent()) {
-            return respuesta.get();
-        } else {
-            throw new ErrorServicio("No se encontro el lugar solicitado");
-        }
-    }
+		Optional<Lugar> respuesta = lugarRepositorio.findById(id);
 
-    public List<Lugar> buscarLugares() {
+		if (respuesta.isPresent()) {
+			return respuesta.get();
+		} else {
+			throw new ErrorServicio("No se encontro el lugar solicitado");
+		}
+	}
 
-        List<Lugar> lugares = lugarRepositorio.findAll();
+	public List<Lugar> buscarLugares() {
 
-        return lugares;
-    }
-    
-    
+		List<Lugar> lugares = lugarRepositorio.findAll();
+
+		return lugares;
+	}
+
 }

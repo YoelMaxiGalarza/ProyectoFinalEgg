@@ -2,10 +2,9 @@ package com.turistearg.Servicios;
 
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.turistearg.Entidades.Categoria;
@@ -13,8 +12,6 @@ import com.turistearg.Entidades.Foto;
 import com.turistearg.Entidades.Publicacion;
 import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
-import com.turistearg.Repositorios.CategoriaRepositorio;
-//import com.turistearg.Repositorios.CategoriasRepositorio;
 import com.turistearg.Repositorios.PublicacionRepositorio;
 import com.turistearg.Repositorios.UsuarioRepositorio;
 import java.util.ArrayList;
@@ -30,9 +27,6 @@ public class PublicacionServicio {
 	private PublicacionRepositorio publicacionRepositorio;
 
 	@Autowired
-	private CategoriaRepositorio categoriaRepositorio;
-
-	@Autowired
 	private CategoriaServicio categoriaServicio;
 
 	@Autowired
@@ -42,31 +36,36 @@ public class PublicacionServicio {
 	public void crear(MultipartFile archivo, String idUsuario, String descripcion, String idCategoria)
 			throws ErrorServicio {
 
-		validar(idUsuario, idCategoria);
+		try {
+			validar(idUsuario, idCategoria);
 
-		Publicacion publicacion = new Publicacion();
+			Publicacion publicacion = new Publicacion();
 
-		Optional<Usuario> respuesta = usuarioRepositorio.findById(idUsuario);
+			Optional<Usuario> respuesta = usuarioRepositorio.findById(idUsuario);
 
-		if (respuesta.isPresent()) {
+			if (respuesta.isPresent()) {
 
-			Usuario user = usuarioRepositorio.findById(idUsuario).get();
-			publicacion.setUsuario(user);
+				Usuario user = usuarioRepositorio.findById(idUsuario).get();
+				publicacion.setUsuario(user);
+			}
+			Date date = new Date();
+			publicacion.setFechaPublicacion(date);
+
+			Categoria categoria = categoriaServicio.buscarCategoria(idCategoria);
+
+			publicacion.setCategoria(categoria);
+
+			publicacion.setDescripcion(descripcion);
+
+			Foto foto = serviciosFoto.guardar(archivo);
+
+			publicacion.setFoto(foto);
+
+			publicacionRepositorio.save(publicacion);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw new ErrorServicio(e.getMessage(), e);
 		}
-		Date date = new Date();
-		publicacion.setFechaPublicacion(date);
-
-		Categoria categoria = categoriaServicio.buscarCategoria(idCategoria);
-
-		publicacion.setCategoria(categoria);
-
-		publicacion.setDescripcion(descripcion);
-
-		Foto foto = serviciosFoto.guardar(archivo);
-
-		publicacion.setFoto(foto);
-
-		publicacionRepositorio.save(publicacion);
 	}
 
 	public Publicacion buscarPublicacionPorId(String id) throws ErrorServicio {
@@ -80,24 +79,13 @@ public class PublicacionServicio {
 		}
 	}
 
-	private void validar(String nombreDeUsuario, String categoria) throws ErrorServicio {
-
-		if (nombreDeUsuario == null || nombreDeUsuario.isEmpty()) {
-			throw new ErrorServicio("El nombre no puede ser nulo.");
-		}
-
-		if (categoria == null || categoria.isEmpty()) {
-			throw new ErrorServicio("La categoria no puede ser nula.");
-		}
-	}
-
 	public List<Publicacion> buscarPublicacionesPorCategoria(String idCategoria) throws ErrorServicio {
 
 		if (idCategoria == null) {
-			throw new ErrorServicio("La id no puede ser nula");
+			throw new ErrorServicio("El Id de Categoria no puede ser nulo");
 		}
 
-		List<Publicacion> publicaciones = new ArrayList();
+		List<Publicacion> publicaciones = new ArrayList<Publicacion>();
 		publicaciones = publicacionRepositorio.buscarPublicacionesPorCategoria(idCategoria);
 
 		if (publicaciones == null) {
@@ -110,7 +98,7 @@ public class PublicacionServicio {
 
 	public List<Publicacion> buscarPublicacionesPorUsuario(String idUsuario) throws ErrorServicio {
 
-		List<Publicacion> publicaciones = new ArrayList();
+		List<Publicacion> publicaciones = new ArrayList<Publicacion>();
 		publicaciones = publicacionRepositorio.buscarPublicacionesPorUsuario(idUsuario);
 
 		if (publicaciones == null) {
@@ -118,5 +106,16 @@ public class PublicacionServicio {
 		}
 		return publicaciones;
 
+	}
+
+	private void validar(String nombreDeUsuario, String categoria) throws ErrorServicio {
+
+		if (nombreDeUsuario == null || nombreDeUsuario.isEmpty()) {
+			throw new ErrorServicio("El nombre no puede ser nulo.");
+		}
+
+		if (categoria == null || categoria.isEmpty()) {
+			throw new ErrorServicio("La categoria no puede ser nula.");
+		}
 	}
 }
