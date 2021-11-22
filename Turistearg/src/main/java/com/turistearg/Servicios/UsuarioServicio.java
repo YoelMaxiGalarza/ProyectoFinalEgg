@@ -61,6 +61,27 @@ public class UsuarioServicio implements UserDetailsService {
 			throw new ErrorServicio(e.getMessage(), e);
 		}
 	}
+        
+        
+        public void envioTokenAutentificacion(String mail, String urlBase, String token) throws ErrorServicio{
+            
+            if (mail == null || mail.trim().isEmpty()) {
+                throw new ErrorServicio("El mail no puede estar vacio o ser nulo. Coloca un mail");
+            }
+            try {
+                    SimpleMailMessage mensaje = new SimpleMailMessage();
+                    mensaje.setTo(mail);
+                    mensaje.setSubject("Completar Registro Turistearg");
+                    mensaje.setFrom("grupo2egg@gmail.com");
+                    mensaje.setText("Haz click para completar el registro " + urlBase
+                            + "/usuario/confirmar_registro?tokenDeConfirmacion=" + token);
+                    javaMailSender.send(mensaje);
+
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                throw new ErrorServicio(e.getMessage(), e);
+            }
+        }
 
 	@Transactional
 	public void cambiarContraseña(String clave1, String clave2, String mail) throws ErrorServicio {
@@ -94,7 +115,6 @@ public class UsuarioServicio implements UserDetailsService {
 			String encriptada = new BCryptPasswordEncoder().encode(clave1);
 			user.setClave(encriptada);
 
-			user.setAlta(true);
 
 			Foto foto = servicioFoto.guardar(archivo);
 
@@ -194,7 +214,7 @@ public class UsuarioServicio implements UserDetailsService {
 
 	public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
 		Usuario usuario = usuarioRepositorio.buscarUsuarioPorMail(mail);
-		if (usuario != null) {
+		if (usuario != null && usuario.isAlta()) {
 			List<GrantedAuthority> permisos = new ArrayList<GrantedAuthority>();
 
 			GrantedAuthority p1 = new SimpleGrantedAuthority("ROLE_USUARIO_REGISTRADO");
