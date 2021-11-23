@@ -1,7 +1,14 @@
 
 package com.turistearg.Controladores;
 
+import com.turistearg.Entidades.ConfirmacionToken;
+import com.turistearg.Entidades.Lugar;
+import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
+import com.turistearg.Repositorios.LugarRepositorio;
+import com.turistearg.Servicios.TokenServicio;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,64 +18,92 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.turistearg.Servicios.UsuarioServicio;
-
+import java.net.MalformedURLException;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class MainController {        
-   
+public class MainController extends BaseController{
+
 	@Autowired
-   UsuarioServicio usuarioServicio;
-   
-    @GetMapping("/")
-    public String index(){
-        return "index2";
-    }
-    
-    @GetMapping("/login")
-        public String login(@RequestParam(required = false) String error,@RequestParam(required = false) String logout, ModelMap modelo) {
-        if (error != null) {
-            modelo.put("error", "usuario o clave incorrectos.");
-        }
-        if (logout != null) {
-            modelo.put("logout", "Ha salido correctamente de la plataforma");
-        }
-        return "login";
-    }
-    
-    @GetMapping("/registro")
-    public String registro(){
-        return "registro2";
-    }       
-    
-    @PostMapping("/registrar")
-    public String registrar(ModelMap model, @RequestParam MultipartFile foto,
-            @RequestParam String nombreDeUsuario, @RequestParam String mail,
-            @RequestParam String clave1, @RequestParam String clave2) throws ErrorServicio {
+	private UsuarioServicio usuarioServicio;
+
+	@Autowired
+	private LugarRepositorio lugarRepositorio;
         
-        try {
-            
-            usuarioServicio.registrar(foto, nombreDeUsuario, mail, clave1, clave2);
+        @Autowired
+        private TokenServicio tokenServicio;
 
-        } catch (ErrorServicio e) {
-            
-            model.put("error", e.getMessage());
-            model.put("nombreDeUsuario", nombreDeUsuario);
-            model.put("mail", mail);
-            model.put("clave1", clave1);
-            model.put("clave2", clave2);
-            
-            return "registro";
-        }
+	@GetMapping("/")
+	public String index(ModelMap modelo) {
+		List<Lugar> lugares = lugarRepositorio.findAll();
+		modelo.put("lugares", lugares);
+		return "index";
+	}
 
-        return "index";
-    }
+	// TODO: mover endpoints de login y registro a UsuarioController?
+	@GetMapping("/login")
+	public String login(@RequestParam(required = false) String error, @RequestParam(required = false) String logout,
+			ModelMap modelo) {
+            
+		if (error != null) {
+			modelo.put("error", "usuario o clave incorrectos.");
+		}
+		if (logout != null) {
+			modelo.put("logout", "Ha salido correctamente de la plataforma");
+		}
+		return "login";
+	}
+
+	@GetMapping("/registro")
+	public String registro() {
+		return "registro2";
+	}
+
+	@PostMapping("/registrar")
+	public String registrar(ModelMap model, RedirectAttributes redirAttrs, HttpServletRequest httpRequest, @RequestParam MultipartFile foto,
+			@RequestParam("usuario") String nombreDeUsuario, @RequestParam("correo") String mail,
+			@RequestParam("password") String clave1, @RequestParam("password2") String clave2) throws ErrorServicio, MalformedURLException {
+		try {
+
+			usuarioServicio.registrar(foto, nombreDeUsuario, mail, clave1, clave2);
+                        String urlBase = this.getURLBase(httpRequest);
+                        Usuario registrado = usuarioServicio.buscarPorMail(mail);
+                        ConfirmacionToken token = tokenServicio.generarToken(registrado);
+                        usuarioServicio.envioTokenAutentificacion(mail, urlBase, token.getToken());
+                        redirAttrs.addFlashAttribute("success", "Visite su mail para verificar el registro");
+		} catch (ErrorServicio e) {
+
+			model.put("error", e.getMessage());
+			model.put("nombreDeUsuario", nombreDeUsuario);
+			model.put("mail", mail);
+			model.put("clave1", clave1);
+			model.put("clave2", clave2);
+
+			return "registro2";
+		} catch (MalformedURLException e) {
+                        model.put("error", e.getMessage());
+                        return "error";
+            }
+
+		return "redirect:/"; // Devolver vista o mensaje que el mail para completar el registro fue enviado
+	}
         
-    @GetMapping("/recupass")
-    public String recupass(){
-        return "recupass";
+        @RequestMapping(value = "/confirmar_registro", method = {RequestMethod.GET, RequestMethod.POST})
+        public String confirmacionRegistro(ModelMap model, RedirectAttributes redirAttrs, @RequestParam String tokenDeConfirmacion) throws ErrorServicio {
+        
+        ConfirmacionToken token = tokenServicio.buscarPorToken(tokenDeConfirmacion);
+        
+        if (token != null) {
+            Usuario usuario = usuarioServicio.buscarPorMail(token.getUsuario().getMail());
+            usuarioServicio.habilitar(usuario.getId());
+            tokenServicio.limpiarToken(tokenDeConfirmacion);
+            redirAttrs.addFlashAttribute("success", "Registro Completado !");          
+        } else {
+            return "redirect:/error";
+        }
+        return "redirect:/login";
     }
-    
-  }
-    
-
-
+}

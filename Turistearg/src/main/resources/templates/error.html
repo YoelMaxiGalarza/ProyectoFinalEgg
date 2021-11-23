@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Upss</title>
+	<link rel="stylesheet" href="/css/error.css">
+</head>
+
+<body>
+	<main>
+		<h1><a th:text="${codigo}" href="/"></a></h1>
+		<p th:text="${errorMsg}"></p>
+		<div class="travolta"></div>
+	</main>
+</body>
+
+</html>

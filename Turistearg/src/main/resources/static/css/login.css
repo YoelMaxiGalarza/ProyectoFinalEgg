@@ -7,6 +7,7 @@ main {
     max-width: 800px;
     margin: auto;
     padding: 40px;
+    margin-top: 85px;
 }
 
 .formulario {
@@ -112,14 +113,30 @@ main {
 .formulario__btn:hover {
     box-shadow: 3px 0 30px rgba(163, 163, 163, 1);
 }
-
-.olvidopass {
-  color:#000000;
-  text-decoration:underline;
-  cursor:pointer;
-  margin-top: 2%;
+.recupass_link{
+	 cursor:pointer;
+  	margin-top: 2%;
 }
-
+.recupass_link a{
+  color:#000000;
+  text-decoration:none;
+  cursor:pointer;
+ 
+}
+.recupass_link a:hover{
+  color:#4055B2;
+  text-decoration:none;
+  cursor:pointer;
+ 
+}
+.botones_form{
+	display:flex;
+	flex-direction: column;
+}
+.botones_form button{
+	margin: auto;
+	margin-bottom: 15px;
+}
 /* ----- -----  Mediaqueries ----- ----- */
 @media screen and(max-width: 800px) {
     .formulario {

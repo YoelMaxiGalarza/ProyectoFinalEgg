@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--<link rel="stylesheet" th:href="@{/css/publicar.css}">-->
+	<title>Document</title>
+</head>
+
+<body>
+	<div class="container">
+		<h2>Publicacion</h2>
+		<form action="/publicacion/publicar" method="POST" enctype="multipart/form-data">
+
+			<input type="hidden" name="idUsuario" th:value="${idUsuario}"></input>
+			<input type="hidden" name="idCategoria" th:value="${idCategoria}"></input>
+
+			<div class="group">
+				<textarea name="descripcion" id="" cols="30" rows="10"></textarea>
+			</div>
+			
+			<div class="group">
+				<input type="file" name="foto" required>
+				<span class="highlight"></span>
+				<span class="bar"></span>
+			</div>
+			
+			<button type="submit">Publicar</button>
+		</form>
+	</div>
+</body>
+
+</html>

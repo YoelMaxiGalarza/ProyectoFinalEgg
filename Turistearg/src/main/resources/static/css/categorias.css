@@ -1,0 +1,43 @@
+.contenedor{
+	margin-top: 86px;
+}
+
+.descripcion{
+	display:flex;
+	width:100%;
+	height:150px;
+	text-align: center;
+}
+
+.linea{
+	width:100%;
+	height:1px;
+	background-color: lightslategray;
+}
+
+main{
+	width:100%;
+	margin-top: 85px;
+}
+.mainCont__grid{
+	display:grid;
+	grid-auto-rows: 22rem;
+	grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+	gap:1rem;
+	height:auto;
+}
+.mainCont_grid div{
+	width:100%;
+	cursor:pointer;
+}
+
+.cat__image{
+	width:100%;
+	border-radius: 15px;	
+}
+.cat__name{
+	font-size: 21px;
+	font-weight: 600;
+	text-align: center;
+	color:rgb(41, 41, 41);
+}

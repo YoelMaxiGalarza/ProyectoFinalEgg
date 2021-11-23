@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Validación de Formulario con Javascript</title>
+	<title>Login</title>
 	<link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,14 +14,22 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/login.css">
 	<link rel="stylesheet" href="css/navbar.css">
-
 </head>
 
 <body>
-	<div th:replace="navbar :: navbar-registro"></div>
+	<div th:replace="fragmentos/navbar :: navbar-general"></div>
 	<main>
-		<form action="" class="formulario" id="formulario">
-                    			<!-- Grupo: Correo Electronico -->
+		<section>
+			<div>
+				<h2>Login</h2>
+			</div>
+		</section>
+                <div class="alert alert-success alert-dismissible fade show" role="alert"  th:if="${success}">
+                                <strong th:text="${success}" ></strong>
+                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 </div>
+		<form action="/logincheck" method="POST" class="formulario" id="formulario">
+			<!-- Grupo: Correo Electronico -->
 			<div class="formulario__grupo" id="grupo__correo">
 				<label for="correo" class="formulario__label">Correo Electrónico</label>
 				<div class="formulario__grupo-input">
@@ -37,19 +46,23 @@
 						placeholder="Contraseña">
 				</div>
 			</div>
-                        
-                        <div class="olvidopass" id="olvido__password">
-                            <p>Olvide mi contraseña</p>
-                            
-                        </div>
-                        
-                        <button type="submit" class="formulario__btn">Registrarte</button>
-                        <button type="submit" class="formulario__btn-enviar">INGRESAR</button>
 
+			<div class="recupass_link">
+				<a href="/usuario/recuperar-contrasenia">Olvide mi contraseña</a>
+			</div>
+			
+			<div class="botones_form">
+			<button type="submit" class="formulario__btn-enviar formulario__btn">INGRESAR</button>
+			<button href="/registro" class="formulario__btn">Registrarte</button>
+			</div>
 		</form>
+		
 	</main>
-
+        
 	<script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
 </body>
 
 </html>
