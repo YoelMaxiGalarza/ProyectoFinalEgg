@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -24,7 +24,13 @@
 				<h2>RECUPERAR CONTRASEÑA</h2>
 			</div>
 		</section>
-		<form action="/usuario/recuperar-contraseña" method="POST" class="formulario" id="formulario">
+             <div class="alert alert-success alert-dismissible fade show" role="alert"  th:if="${success}">
+                   <strong th:text="${success}"></strong>
+             </div>
+            <div class="alert alert-danger" role="alert" th:if="${error}">
+                <strong th:text="${error}"></strong>
+            </div>
+		<form action="/usuario/recuperar-contrasenia" method="POST" class="formulario" id="formulario">
 			
 			<!-- Grupo: Correo Electronico -->
 			<div class="formulario__grupo" id="grupo__correo">

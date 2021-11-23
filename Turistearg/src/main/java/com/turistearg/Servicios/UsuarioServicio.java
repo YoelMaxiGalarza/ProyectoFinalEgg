@@ -28,6 +28,7 @@ import com.turistearg.Entidades.Usuario;
 import com.turistearg.Excepciones.ErrorServicio;
 import com.turistearg.Repositorios.TokenRepositorio;
 import com.turistearg.Repositorios.UsuarioRepositorio;
+import org.springframework.scheduling.annotation.Async;
 
 @Service
 public class UsuarioServicio implements UserDetailsService {
@@ -44,6 +45,7 @@ public class UsuarioServicio implements UserDetailsService {
 	@Autowired
 	TokenRepositorio tokenRepositorio;
 
+        @Async
 	public void envioToken(String mail, String urlBase, String token) throws ErrorServicio {
 		if (mail == null || mail.trim().isEmpty()) {
 			throw new ErrorServicio("El mail no puede estar vacio o ser nulo. COLOCA UN MAIL");
@@ -54,13 +56,35 @@ public class UsuarioServicio implements UserDetailsService {
 			mensaje.setSubject("Recuperacion de Contraseña Turistearg");
 			mensaje.setFrom("grupo2egg@gmail.com");
 			mensaje.setText("Haz click para renovar la contraseña " + urlBase
-					+ "/usuario/confirmar_cambio_contraseña?tokenDeConfirmacion=" + token);
+					+ "/usuario/confirmar_cambio_contrasenia?tokenDeConfirmacion=" + token);
 			javaMailSender.send(mensaje);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			throw new ErrorServicio(e.getMessage(), e);
 		}
 	}
+         @Async
+        public void envioTokenAutentificacion(String mail, String urlBase, String token) throws ErrorServicio{
+            
+            if (mail == null || mail.trim().isEmpty()) {
+                throw new ErrorServicio("El mail no puede estar vacio o ser nulo. Coloca un mail");
+            }
+            
+                 
+            try {
+                    SimpleMailMessage mensaje = new SimpleMailMessage();
+                    mensaje.setTo(mail);
+                    mensaje.setSubject("Completar Registro Turistearg");
+                    mensaje.setFrom("grupo2egg@gmail.com");
+                    mensaje.setText("Haz click para completar el registro " + urlBase
+                            + "/confirmar_registro?tokenDeConfirmacion=" + token);
+                    javaMailSender.send(mensaje);
+
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                throw new ErrorServicio(e.getMessage(), e);
+            }
+        }
 
 	@Transactional
 	public void cambiarContraseña(String clave1, String clave2, String mail) throws ErrorServicio {
@@ -236,5 +260,7 @@ public class UsuarioServicio implements UserDetailsService {
 		if (user != null) {
 			throw new ErrorServicio("Ya existe un usuario con el email ingresado.");
 		}
+                
+               
 	}
 }
