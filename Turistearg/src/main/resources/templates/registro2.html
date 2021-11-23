@@ -26,7 +26,9 @@
 			</div>
 		</section>
 		<!-- parrafo si hay un error en el login-->
-		<p th:if="${error != null}" th:text="${error}" style="color:red"></p>
+		 <div class="alert alert-danger" role="alert" th:if="${error}">
+                <strong th:text="${error}"></strong>
+            </div>
 		<form method="POST" action="/registrar" enctype="multipart/form-data" class="formulario" id="formulario">
 			<!-- Grupo: Usuario -->
 			<div class="formulario__grupo" id="grupo__usuario">
