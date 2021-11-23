@@ -56,7 +56,7 @@ public class UsuarioServicio implements UserDetailsService {
 			mensaje.setSubject("Recuperacion de Contraseña Turistearg");
 			mensaje.setFrom("grupo2egg@gmail.com");
 			mensaje.setText("Haz click para renovar la contraseña " + urlBase
-					+ "/usuario/confirmar_cambio_contraseña?tokenDeConfirmacion=" + token);
+					+ "/usuario/confirmar_cambio_contrasenia?tokenDeConfirmacion=" + token);
 			javaMailSender.send(mensaje);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

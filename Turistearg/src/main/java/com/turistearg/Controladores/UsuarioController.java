@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/usuario")
@@ -148,36 +149,37 @@ public class UsuarioController extends BaseController {
 		return "perfil";
 	}
 
-	@GetMapping("/recuperar-contraseña")
+	@GetMapping("/recuperar-contrasenia")
 	public String recupass() {
 		return "recupass";
 	}
 
-	@PostMapping("/recuperar-contraseña")
-	public String recuperarContraseña(HttpServletRequest httpRequest, ModelMap modelo,
+	@PostMapping("/recuperar-contrasenia")
+	public String recuperarContraseña(HttpServletRequest httpRequest, RedirectAttributes redirAttrs, ModelMap modelo,
 			@RequestParam(name = "correo", required = true) String mail) throws ErrorServicio {
 		try {
 			String urlBase = this.getURLBase(httpRequest);
 			Usuario usuario = usuarioServicio.buscarPorMail(mail);
 			ConfirmacionToken token = tokenServicio.generarToken(usuario);
 			usuarioServicio.envioToken(mail, urlBase, token.getToken());
+                        redirAttrs.addFlashAttribute("success", "Visite su mail para poder renovar su contraseña");
 		} catch (ErrorServicio e) {
-			modelo.put("error", e.getMessage());
-			return "error";
+			redirAttrs.addFlashAttribute("error", e.getMessage());
 		} catch (MalformedURLException e) {
 			modelo.put("error", e.getMessage());
 			return "error";
 		}
-		return "recupass";
+		return "redirect:/usuario/recuperar-contrasenia";
 	}
 
-	@RequestMapping(value = "/confirmar_cambio_contraseña", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/confirmar_cambio_contrasenia", method = { RequestMethod.GET, RequestMethod.POST })
 	public String validateResetToken(ModelMap model, @RequestParam String tokenDeConfirmacion) throws ErrorServicio {
 		ConfirmacionToken token = tokenServicio.buscarPorToken(tokenDeConfirmacion);
 
 		if (token != null) {
 			model.put("tokenDeConfirmacion", tokenDeConfirmacion);
 			model.put("usuario", token.getUsuario().getId());
+                        model.put("correo", token.getUsuario().getMail());
 		} else {
 			model.put("error", "The link is invalid or broken!");
 			return "error";
@@ -186,13 +188,14 @@ public class UsuarioController extends BaseController {
 		return "resetPassword";
 	}
 
-	@PostMapping("/cambio_contraseña")
-	public String cambioContraseña(@RequestParam("password") String clave1, @RequestParam("password2") String clave2,
+	@PostMapping("/cambio_contrasenia")
+	public String cambioContraseña(RedirectAttributes redirAttrs, @RequestParam("password") String clave1, @RequestParam("password2") String clave2,
 			ModelMap modelo, @RequestParam("correo") String mail, @RequestParam String tokenDeConfirmacion)
 			throws ErrorServicio {
 		try {
 			usuarioServicio.cambiarContraseña(clave1, clave2, mail);
 			tokenServicio.limpiarToken(tokenDeConfirmacion);
+                        redirAttrs.addFlashAttribute("success", "Contraseña renovada");
 		} catch (ErrorServicio e) {
 			modelo.put("error", e.getMessage());
 			return "error";
