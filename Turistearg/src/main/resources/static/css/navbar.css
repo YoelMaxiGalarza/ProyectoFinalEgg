@@ -7,13 +7,19 @@
 	margin:0;
 	padding:0;
 }
+
 header .contenedor-nav {
+	font-family: 'Roboto', sans-serif;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	background-color: #490180;
 	width: 100%;
 	padding:20px;
+	margin:0;
+	position: fixed;
+	top:0px;
+	
 }
 
 header .logotipo {

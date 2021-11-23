@@ -12,38 +12,61 @@
 		integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Shalimar&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="/css/navbar.css">
-	<link rel="stylesheet" href="/css/tweet.css">
-	<link rel="stylesheet" href="/css/publicaciones.css">
+	<link rel="stylesheet" th:href="@{/css/publicacion.css}" />
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" th:href="@{/css/perfil.css}">
 
 
 </head>
 
 <body>
 	<div th:replace="fragmentos/navbar :: navbar-general"></div>
-	<main>
-		<section>
-			<div class="tweet" th:each="publicacion : ${publicaciones}">
-				<img class="tweet__author-logo" th:src="${'/foto/usuario/' + publicacion.usuario.id}">
-				<div class="tweet__main">
-					<div class="tweet__header">
-						<div class="tweet__author-name" th:text="${publicacion.usuario.nombreDeUsuario}">
+	<div class="contenedor">
+		<div class="perfil-container">
+			<img class="img-perfil" th:src="${'/foto/usuario/' + session.usuariosession.id}">
+			<div class="contenedor-cabecera">
+				<div class="cabecera1">
+					<h1 th:text="${session.usuariosession.nombreDeUsuario}"></h1>
+					<a class="button" href="/editar-perfil">Editar
+						Perfil</a>
+				</div>
+			</div>
+		</div>
+		<main>
+
+			<div class="linea"></div>
+
+			<div class="mainCont__grid">
+				<div class="publicacion">
+					<div class="public" th:each="publicacion : ${publicaciones}">
+						<img class="public__author-logo" th:src="${'/foto/usuario/' + publicacion.usuario.id}">
+						<div class="public__main">
+					<div class="public__header">
+						<div class="public__author-name" th:text="${publicacion.usuario.nombreDeUsuario}">
+						</div>
+						<div class="public__publish-time"
+							th:text="${#dates.day(publicacion.fechaPublicacion) + ' ' + #dates.monthNameShort(publicacion.fechaPublicacion)+ ' ' + #dates.year(publicacion.fechaPublicacion)+ ' ' + #dates.hour(publicacion.fechaPublicacion)+ ':' + #dates.minute(publicacion.fechaPublicacion)}">
+						</div>
+					</div>
+						<div class="public__content">
+							<p th:text="${publicacion.descripcion}"></p>
+							<img class="public__image" th:src="${'/foto/publicacion/' + publicacion.id}"
+								alt="foto publicacion">
 						</div>
 					</div>
 				</div>
-				<div class="tweet__content">
-					<p th:text="${publicacion.descripcion}"></p>
-					<div>
-						<img class="tweet__image" th:src="${'/foto/publicacion/' + publicacion.id}"
-							alt="foto publicacion">
-					</div>
-				</div>
 			</div>
-		</section>
-		<div>
-		<a th:href="@{/publicacion/crear(idUsuario=${session.usuariosession.id})}" th:if="${session.usuariosession != null}">Crear Publicacion</a>
+		</main>
+		<div class="button_container">
+			<div class="boton">
+				<a class="boton_crear" th:href="@{/publicacion/crear(idUsuario=${session.usuariosession.id})}"
+					th:if="${session.usuariosession != null}"><i class="far fa-clone icon"></i>
+					<span>Crear Publicacion</span></a>
+			</div>
 		</div>
-	</main>
+		<div class="footer"></div>
+	</div>
+	<script src="https://kit.fontawesome.com/b7fddb7853.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

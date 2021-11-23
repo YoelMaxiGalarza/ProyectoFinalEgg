@@ -17,10 +17,10 @@ public interface TokenRepositorio extends JpaRepository <ConfirmacionToken, Stri
 	@Transactional
 	@Modifying
 	@Query ("DELETE FROM ConfirmacionToken c WHERE c.token = :token")
-	public int limpiarToken(String token);
+	public int limpiarToken(@Param("token") String token);
 	
 	@Transactional
 	@Modifying
 	@Query ("DELETE FROM ConfirmacionToken c WHERE c.usuario.id = :usuarioId")
-	public int limpiarTokensPorUsuario(String usuarioId);
+	public int limpiarTokensPorUsuario(@Param("usuarioId") String usuarioId);
 }

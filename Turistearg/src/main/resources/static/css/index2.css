@@ -19,6 +19,7 @@ body {
 
 /* ---- ----- ----- Imagen Principal ----- ----- ----- */
 .imagen-principal {
+	margin-top: 85px;
 	font-size: 16px;
 	min-height: 40.62em;
 	color: #fff;

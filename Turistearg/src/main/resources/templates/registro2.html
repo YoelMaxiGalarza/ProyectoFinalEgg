@@ -20,6 +20,11 @@
 <body>
 	<div th:replace="fragmentos/navbar :: navbar-general"></div>
 	<main>
+		<section>
+			<div>
+				<h2>Registrate</h2>
+			</div>
+		</section>
 		<!-- parrafo si hay un error en el login-->
 		<p th:if="${error != null}" th:text="${error}" style="color:red"></p>
 		<form method="POST" action="/registrar" enctype="multipart/form-data" class="formulario" id="formulario">

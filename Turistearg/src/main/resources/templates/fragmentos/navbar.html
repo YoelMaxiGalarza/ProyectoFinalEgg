@@ -10,6 +10,7 @@
 				<a th:if="${session.usuariosession == null}" href="/registro">REGISTRATE</a>
 				<a th:if="${session.usuariosession == null}" href="/login">LOGIN</a>
 				<a th:if="${session.usuariosession != null}" th:href="@{/usuario/perfil(id=__${session.usuariosession.id}__)}">PERFIL</a>
+				<a th:if="${session.usuariosession != null}" th:href="@{/logout}">SALIR</a>
 			</nav>
 		</div>
 	</header>

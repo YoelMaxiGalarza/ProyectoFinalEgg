@@ -1,0 +1,157 @@
+body{
+	background-color:rgb(243, 243, 243);
+	}
+
+.contenedor{
+	width:70%;
+	margin:auto;
+	padding:20px 0;
+	margin-top:100px;
+}
+.perfil-container{
+	display:flex;	
+}
+
+.perfil-container img{
+	height:150px;
+	width:150px;
+	border-radius: 50%;
+	cursor:pointer;
+}
+
+.contenedor-cabecera{
+	margin-left: 100px;
+}
+.cabecera1{
+	width:290px;
+	display:flex;
+	align-items: center;
+	margin-bottom: 15px;
+	justify-content: space-between;
+}
+.cabecera1 h1{
+	color: #000;
+	font-weight: 200;
+	font-size: 26px;
+}
+.cabecera1 .button{
+	width:120px;
+	height:30px;
+	background-color: #fafafa;
+	border:solid #dbdbdb 1px;
+	border-radius: 10px;
+	cursor:pointer;
+	text-decoration: none;
+	text-align: center;
+	color:black;
+	
+}
+.linea{
+	width:100%;
+	height:1px;
+	margin:auto;
+	background-color: lightslategray;
+	margin-bottom: 15px;
+}
+
+main{
+	width:100%;
+	margin: auto;
+	margin-top: 60px;
+	
+}
+.mainCont__grid{
+	display:grid;
+	grid-auto-rows: 18rem;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	gap:1rem;
+	height:auto;
+}
+.mainCont_grid div{
+	width:100%;
+	cursor:pointer;
+}
+
+
+
+.button_container{
+	position:fixed;
+	bottom: 0;
+	display:flex;
+	justify-content: center;
+	width:100%;
+}
+.boton_crear{
+	 font-size: 19px;
+  color: #251134;
+  background:#c4c4c4;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  padding: 10px;
+  text-decoration: none;
+  margin: 10px;
+}
+.boton_crear:hover {
+	font-size: 19px;
+   background: #490180;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  padding: 10px;
+  text-decoration: none;
+}
+.boton{
+	  font-size: 19px;
+  color: #251134;
+  background:#c4c4c4;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  padding: 0px;
+  margin-bottom: 20px;
+}
+.boton:hover{
+   background: #490180;
+   margin-bottom: 20px;
+   box-shadow: 3px 0 30px rgba(163, 163, 163, 1);
+}
+
+.icon{
+	margin-right: 10px;
+}
+
+.public {
+    display: flex;
+    border-bottom: 1px solid #000;
+    margin-bottom: 2px;
+    padding: 10px 15px;
+  }
+  .public__author-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+    margin-right: 5px;
+  }
+  
+  .public__author-slug {
+    color: lightslategray;
+    font-size: 15px;
+  }
+  
+  .public__publish-time {
+    margin-left: 5px;
+    color: lightslategray;
+  }
+@media screen and (max-width: 600px) {
+	.contenedor-cabecera{
+	margin-left: 30px;
+	}
+	.header{
+		margin-top: 95px;
+	}
+}

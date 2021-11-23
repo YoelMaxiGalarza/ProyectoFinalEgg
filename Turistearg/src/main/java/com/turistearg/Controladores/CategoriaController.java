@@ -31,7 +31,6 @@ public class CategoriaController {
         try {
             List<Categoria> categorias = categoriaServicio.buscarCategoriasPorLugar(idLugar);
             Lugar lugar = lugarServicio.buscarLugar(idLugar);
-            System.out.println(lugar.getId());
             model.put("lugar", lugar);
             model.put("categorias", categorias);
             model.put("id", idLugar);

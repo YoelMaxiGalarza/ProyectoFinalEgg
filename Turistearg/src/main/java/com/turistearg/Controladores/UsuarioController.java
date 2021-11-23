@@ -72,6 +72,7 @@ public class UsuarioController extends BaseController {
 
 		} catch (ErrorServicio e) {
 			model.addAttribute("error", e.getMessage());
+			return "redirect:/error";
 		}
 		return "editar-perfil";
 	}
