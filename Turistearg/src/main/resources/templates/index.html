@@ -30,6 +30,10 @@
 				<h3 id="lugares">Destinos turisticos</h3>
 			</div>
 			    <p th:if="${error != null}" th:text="${error}"></p>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert"  th:if="${success}">
+                                <strong th:text="${success}" ></strong>
+                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                             </div>
 			<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 				<div class="carousel-indicators">
 					<button type="button" th:each="lugar, iterStat : ${lugares}" data-bs-target="#carouselExampleIndicators" 
