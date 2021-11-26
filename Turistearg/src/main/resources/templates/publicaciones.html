@@ -20,7 +20,7 @@
 	<div class="layout">
 		<div class="layout__left-sidebar">
 			<div class="sidebar-menu">
-				<div class="sidebar-menu__item">
+				<div class="sidebar-menu__item" th:if="${session.usuariosession != null}">
 					<a th:href="@{/publicacion/categoria/crear(idCategoria=${idCategoria},idUsuario=${session.usuariosession.id})}" 
 						th:if="${session.usuariosession != null}">
 						<i class="far fa-clone icon"></i>

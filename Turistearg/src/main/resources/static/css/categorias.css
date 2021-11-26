@@ -6,7 +6,13 @@
 	display:flex;
 	width:100%;
 	height:150px;
-	text-align: center;
+	justify-content: center;
+	padding:40px;
+}
+
+.descripcion-lugar{
+	font-size: 1.5em;
+	font-family: 'Roboto', sans-serif;
 }
 
 .linea{
@@ -18,6 +24,7 @@
 main{
 	width:100%;
 	margin-top: 85px;
+	padding: 0px 30px;
 }
 .mainCont__grid{
 	display:grid;
@@ -33,7 +40,8 @@ main{
 
 .cat__image{
 	width:100%;
-	border-radius: 15px;	
+	border-radius: 15px;
+	height:250px;	
 }
 .cat__name{
 	font-size: 21px;

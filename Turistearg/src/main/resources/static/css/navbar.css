@@ -28,8 +28,12 @@ header .logotipo {
 	color: var(--logo);
 	font-size: 30px;
 	margin-left: 10px;
+	border-radius: 15px;
 }
 
+header .logotipo:hover {
+	color:white;
+}
 header nav a {
 	color: rgb(170, 170, 170);
 	text-decoration: none;

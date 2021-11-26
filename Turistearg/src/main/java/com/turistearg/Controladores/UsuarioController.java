@@ -30,13 +30,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UsuarioController extends BaseController {
 
 	@Autowired
-	UsuarioServicio usuarioServicio;
+	private UsuarioServicio usuarioServicio;
 
 	@Autowired
 	private TokenServicio tokenServicio;
 
 	@Autowired
-	PublicacionServicio publicacionServicio;
+	private PublicacionServicio publicacionServicio;
 
 	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
 	@GetMapping("/perfil")
@@ -60,11 +60,12 @@ public class UsuarioController extends BaseController {
 
 	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
 	@GetMapping("/editar-perfil")
-	public String editarPerfil(HttpSession session, @RequestParam String id, ModelMap model) {
+	public String editarPerfil(HttpSession session, RedirectAttributes redirAttrs, @RequestParam String id, ModelMap model) {
 		
 		Usuario login = (Usuario) session.getAttribute("usuariosession");
 
 		if (login == null || !login.getId().equals(id)) {
+			redirAttrs.addFlashAttribute("error", "Tienes que estar logueado para realizar esa accion");
 			return "redirect:/";
 		}
 		try {
@@ -75,36 +76,38 @@ public class UsuarioController extends BaseController {
 			model.addAttribute("error", e.getMessage());
 			return "redirect:/error";
 		}
-		return "editar-perfil";
+		return "editarPerfil";
 	}
 
 	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
 	@PostMapping("/actualizar-perfil")
-	public String actualizarperfil(ModelMap model, HttpSession session, @RequestParam String id,
-			@RequestParam String nombreDeUsuario, @RequestParam String clave1, @RequestParam String clave2,
-			@RequestParam String mail) {
+	public String actualizarperfil(ModelMap model, HttpSession session,RedirectAttributes redirAttrs, @RequestParam String id,
+			@RequestParam("usuario") String nombreDeUsuario, @RequestParam("password") String clave1, @RequestParam("password2") String clave2,
+			@RequestParam("correo") String mail) {
 
-		Usuario usuario = null;
 		Usuario login = (Usuario) session.getAttribute("usuariosession");
 		if (login == null || !login.getId().equals(id)) {
 			return "redirect:/";
 		}
 
 		try {
-			usuario = usuarioServicio.buscarPorId(id);
+			Usuario usuario = usuarioServicio.buscarPorId(id);
 			usuarioServicio.modificar(id, nombreDeUsuario, mail, clave1, clave2);
 			session.setAttribute("usuariosession", usuario);
-
-			return "redirect:/perfil";
+			List<Publicacion> publicaciones = publicacionServicio.buscarPublicacionesPorUsuario(id);
+			model.addAttribute("publicaciones", publicaciones);
+			redirAttrs.addFlashAttribute("success", "Datos modificados con exito!");
 
 		} catch (ErrorServicio ex) {
 
-			model.put("error", ex.getMessage());
+			redirAttrs.addFlashAttribute("error", ex.getMessage());
 
 			Usuario usuarioActual = (Usuario) session.getAttribute("usuariosession");
-
+			model.put("error", ex.getMessage());
 			model.put("usuario", usuarioActual); // probar que devuelva el usuario no modificado al dar un tipo de error
+			return "editarPerfil";
 		}
+		
 		return "perfil";
 
 	}
@@ -124,7 +127,7 @@ public class UsuarioController extends BaseController {
 		} catch (ErrorServicio e) {
 			model.addAttribute("error", e.getMessage());
 		}
-		return "editar-foto";
+		return "cambiarFotoPerf";
 	}
 
 	@PostMapping("/actualizar-fotoPerfil")
@@ -139,9 +142,10 @@ public class UsuarioController extends BaseController {
 		try {
 			Usuario usuario = usuarioServicio.buscarPorId(id);
 			usuarioServicio.modificarFoto(fotoPerfil, id);
-			session.setAttribute("usuariosession", usuario);
-
-			return "redirect:/perfil";
+			session.setAttribute("usuario", usuario);
+			List<Publicacion> publicaciones = publicacionServicio.buscarPublicacionesPorUsuario(id);
+			model.addAttribute("success", "La foto ha sido cambiada exitosamente");
+			model.addAttribute("publicaciones", publicaciones);
 
 		} catch (ErrorServicio e) {
 			model.addAttribute("error", e.getMessage());

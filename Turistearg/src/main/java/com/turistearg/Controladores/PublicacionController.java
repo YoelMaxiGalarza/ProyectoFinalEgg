@@ -80,19 +80,18 @@ public class PublicacionController {
 		} catch (ErrorServicio e) {
 			model.put("error", e.getMessage());
 			return "redirect:/publicacion/crear";
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			model.put("error", e.getMessage());
-			return "error";	
+			return "error";
 		}
 
 		return "redirect:/publicacion/publicaciones?id=" + idCategoria;
 	}
-	
+
 	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
 	@GetMapping("/categoria/crear")
-	public String displayCrearPublicacionCategoria(ModelMap model, HttpSession session, @RequestParam String idUsuario, 
-			 @RequestParam String idCategoria) {
+	public String displayCrearPublicacionCategoria(ModelMap model, HttpSession session, @RequestParam String idUsuario,
+			@RequestParam String idCategoria) {
 		try {
 			// Obtener usuario
 			Usuario login = (Usuario) session.getAttribute("usuariosession");
@@ -104,13 +103,41 @@ public class PublicacionController {
 			// Obtener categoria
 			Categoria categoria = categoriaServicio.buscarCategoria(idCategoria);
 			model.put("idCategoria", categoria.getId());
-			
+
 		} catch (Exception e) {
 			model.put("error", e.getMessage());
 			return "error";
 		}
 
 		return "crearPublicacionCategoria";
+	}
+
+	@PreAuthorize(("hasAnyRole('ROLE_USUARIO_REGISTRADO')"))
+	@GetMapping("/editar")
+	public String displayEditarPublicar(ModelMap model, HttpSession session, @RequestParam String idUsuario,
+			@RequestParam String idPublicacion) {
+		try {
+			// Obtener usuario
+			Usuario login = (Usuario) session.getAttribute("usuariosession");
+			if (login == null || !login.getId().equals(idUsuario)) {
+				return "redirect:/";
+			}
+			model.put("idUsuario", idUsuario);
+
+			// Obtener categorias
+			List<Categoria> categorias = categoriaServicio.buscarCategorias();
+			model.put("categorias", categorias);
+
+			// Obtenemos la publicacion
+			Publicacion publicacion = publicacionServicio.buscarPublicacionPorId(idPublicacion);
+			model.put("publicacion", publicacion);
+
+		} catch (Exception e) {
+			model.put("error", e.getMessage());
+			return "error";
+		}
+
+		return "editar-publicacion";
 	}
 
 }

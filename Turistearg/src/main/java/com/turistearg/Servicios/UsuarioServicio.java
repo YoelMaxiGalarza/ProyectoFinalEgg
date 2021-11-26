@@ -137,7 +137,7 @@ public class UsuarioServicio implements UserDetailsService {
 
 		System.out.println(clave2);
 		System.out.println(clave1);
-		validar(nombreDeUsuario, mail, clave1, clave2);
+		validarModificaciones(nombreDeUsuario, mail, clave1, clave2);
 
 		Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
 		if (respuesta.isPresent()) {
@@ -260,6 +260,24 @@ public class UsuarioServicio implements UserDetailsService {
 		if (user != null) {
 			throw new ErrorServicio("Ya existe un usuario con el email ingresado.");
 		}
+	}
+		private void validarModificaciones(String nombreDeUsuario, String mail, String clave1, String clave2) throws ErrorServicio {
+			
+			if (nombreDeUsuario == null || nombreDeUsuario.isEmpty()) {
+				throw new ErrorServicio("El nombre no puede ser nulo.");
+			}
+			
+			if (mail == null || mail.isEmpty()) {
+				throw new ErrorServicio("El mail no puede ser nulo.");
+			}
+			
+			if (clave1 == null || clave1.isEmpty() || clave1.length() <= 6) {
+				throw new ErrorServicio("La clave no puede ser nula y tiene que tener mas de 6 digitos.");
+			}
+			
+			if (!clave1.equals(clave2)) {
+				throw new ErrorServicio("Las claves deben ser iguales");
+			}
                 
                
 	}

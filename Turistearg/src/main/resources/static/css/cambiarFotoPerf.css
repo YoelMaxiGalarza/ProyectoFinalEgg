@@ -1,0 +1,96 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #E5E5E5;
+}
+
+main {
+    max-width: 800px;
+    margin: auto;
+    padding: 40px;
+    margin-top: 65px;
+    
+}
+.formulario {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+.formulario__btn {
+    height: 45px;
+    line-height: 45px;
+    width: 30%;
+    background: #251134;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.1s ease all;
+}
+
+.formulario__btn:hover {
+    box-shadow: 3px 0 30px rgba(163, 163, 163, 1);
+}
+
+
+.container {
+    /* Used to position the input */
+    position: relative;
+
+    /* Center the content */
+    align-items: center;
+    display: flex;
+
+    /* Border */
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    
+    padding: 5px;
+    margin: 3px;
+    width: 30%;
+    background-color: #FFF;
+    box-shadow: 10px solid #000;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.container__input {
+    /* Take the full size */
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    /* Make it transparent */
+    opacity: 0;
+}
+
+.container__icon {
+    margin-left:15px;
+    padding:5px;
+}
+.formulario__grupo-btn-modificar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    
+}
+
+/* ----- -----  Mediaqueries ----- ----- */
+@media screen and(max-width: 800px) {
+    .formulario {
+        grid-template-columns: 1fr;
+    }
+
+    .formulario__grupo-terminos,
+    .formulario__mensaje,
+    .formulario__grupo-btn-enviar {
+        grid-column: 1;
+    }
+
+    .formulario__btn {
+        width: 100%;
+    }
+    
+}

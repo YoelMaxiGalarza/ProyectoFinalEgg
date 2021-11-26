@@ -118,4 +118,36 @@ public class PublicacionServicio {
 			throw new ErrorServicio("La categoria no puede ser nula.");
 		}
 	}
+	
+	@Transactional
+	public void modificar(MultipartFile archivo, String idUsuario, String descripcion, String idCategoria, String idPublicacion)
+			throws ErrorServicio {
+
+		try {
+                    if (idPublicacion == null || idPublicacion.isEmpty()) {
+                        throw new ErrorServicio("La publicacion no puede ser nula");
+                    }
+			validar(idUsuario, idCategoria);
+
+			Optional<Usuario> respuesta = usuarioRepositorio.findById(idUsuario);
+
+			Publicacion publicacion = buscarPublicacionPorId(idPublicacion);
+                        
+			Categoria categoria = categoriaServicio.buscarCategoria(idCategoria);
+
+			publicacion.setCategoria(categoria);
+
+			publicacion.setDescripcion(descripcion);
+
+			Foto foto = serviciosFoto.guardar(archivo);
+
+			publicacion.setFoto(foto);
+
+			publicacionRepositorio.save(publicacion);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw new ErrorServicio(e.getMessage(), e);
+		}
+        }
+
 }

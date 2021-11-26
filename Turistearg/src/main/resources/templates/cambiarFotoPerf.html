@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar foto de perfil</title>
+    <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Shalimar&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/cambiarFotoPerf.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+
+</head>
+
+<body>
+    <div th:replace="fragmentos/navbar :: navbar-general"></div>
+    <main>
+        <section>
+            <div>
+                <h2>Cambiar foto de perfil</h2>
+            </div>
+        </section>
+
+        <form method="POST" action="/usuario/actualizar-fotoPerfil" enctype="multipart/form-data" class="formulario"
+            id="formulario">
+            <input type="hidden" name="id" th:value="${session.usuariosession.id}"></input>
+            <!-- Grupo: Foto -->
+            <div class="container">
+                <!-- The real file input -->
+                <input type="file" name="fotoPerfil" class="container__input" />
+
+				<!-- The upload icon -->
+				<div class="container__icon">
+					<svg viewBox="0 0 24 24"
+						style="fill: none; height: 24px; stroke: rgba(0, 0, 0, 0.4); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1; width: 24px; margin-right:5px;">
+						<path d="M18.5,7.5c0.275,0,0.341-0.159,0.146-0.354l-6.292-6.292c-0.195-0.196-0.512-0.196-0.707-0.001
+                                            c0,0-0.001,0.001-0.001,0.001L5.354,7.147C5.154,7.342,5.225,7.501,5.5,7.501h3v10c0,0.552,0.448,1,1,1h5c0.552,0,1-0.448,1-1V7.5
+                                            H18.5z
+                                            M23.5,18.5v4c0,0.552-0.448,1-1,1h-21c-0.552,0-1-0.448-1-1v-4"></path>
+					</svg>
+				</div>
+                <!-- The label -->
+                <label for="foto" class="formulario__label">Nueva Foto De Perfil</label>
+            </div>
+            <div class="formulario_grupo formulario_grupo-btn-modificar">
+                <button type="submit" class="formulario__btn">Guardar</button>
+            </div>
+            
+        </form>
+    </main>
+
+    <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -4,7 +4,7 @@
 <body>
 	<header th:fragment="navbar-general">
 		<div class="contenedor-nav">
-			<span class="logotipo">TURISTEARG</span>
+			<a href="/" class="logotipo">TURISTEARG</a>
 			<nav>
 				<a href="/">INICIO</a>
 				<a th:if="${session.usuariosession == null}" href="/registro">REGISTRATE</a>
